@@ -186,15 +186,13 @@ p{margin:0 0 var(--space-4) 0}
     <h1 id="gate-title">Temperature-Controlled Delivery</h1>
     <p class="lead">Stream 4 of the Courier Driver Training programme</p>
     <div class="callout callout--warning"><span class="callout__title">Prerequisite</span>This stream builds on the Core Courier Driver Fundamentals (Stream 1). Please complete Stream 1 before starting this course.</div>
-    <p>Enter your access code to start. You should have received a code by email when you bought the course.</p>
-    <div class="field" id="codeField">
-      <label for="codeInput">Access code</label>
-      <input type="text" id="codeInput" autocomplete="off" autocapitalize="characters" placeholder="e.g. CDT-001" inputmode="text">
-      <div class="field__error" id="codeError">That code is not recognised. Check for spaces and try again.</div>
-      <div class="field__status" id="codeStatus"></div>
+    <p id="gate-status">Checking your access...</p>
+    <div class="field" id="codeField" style="display:none;">
+      <label for="codeInput">Paste your access token</label>
+      <input type="text" id="codeInput" autocomplete="off" placeholder="Paste the token from your email">
+      <button class="btn btn--primary btn--full" id="codeSubmit" type="button">Verify</button>
+      <p class="field__hint text-center mt-5">You received this token by email after purchasing. <a href="https://mkglobal.co.za/products.html">Purchase this course</a></p>
     </div>
-    <button class="btn btn--primary btn--full" id="codeSubmit">Unlock Course</button>
-    <p class="field__hint text-center mt-5">Need a code? Buy the course at <a href="https://mkglobal.co.za" target="_blank" rel="noopener">mkglobal.co.za</a> or contact info@mkglobal.co.za.</p>
   </div>
 </div>
 
@@ -324,10 +322,20 @@ p{margin:0 0 var(--space-4) 0}
 <script>
 "use strict";
 
-const FALLBACK_ACCESS_CODE = "CDT-2026";
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzg2UGRYHqONpt-_X3f8YuJYdGj_mnbtu_HSicYBQLm9pjTequM9kmkkvfQRRVGQRS/exec";
-const COURSE_KEY = "courier-tempcontrol";
-const APPS_SCRIPT_TIMEOUT_MS = 6000;
+/* ---- CONFIGURATION ---- */
+/* Token-based access, issued by the Paystack webhook after purchase.
+   See api/courses/webhook.js and api/courses/validate.js in the
+   mkglobal-website repo. PRODUCT_ID must match api/_lib/products.js. */
+const PRODUCT_ID = "courier-tempcontrol";
+const VALIDATE_URL = "https://mkglobal.co.za/api/courses/validate";
+const BUY_URL = "https://mkglobal.co.za/products.html";
+const TOKEN_STORAGE_KEY = "mkg_access_token";
+
+function base64urlDecode(str) {
+  str = str.replace(/-/g, "+").replace(/_/g, "/");
+  while (str.length % 4) str += "=";
+  return atob(str);
+}
 
 const EMAILJS_CONFIG = {
   enabled: false,
@@ -567,70 +575,97 @@ function route() {
   renderDashboard();
 }
 
-function fetchWithTimeout(url, ms) {
-  return new Promise((resolve, reject) => {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => { ctrl.abort(); reject(new Error("timeout")); }, ms);
-    fetch(url, { method: "GET", signal: ctrl.signal })
-      .then(r => { clearTimeout(timer); resolve(r); })
-      .catch(err => { clearTimeout(timer); reject(err); });
-  });
-}
-async function validateCodeAgainstSheet(code) {
-  const url = APPS_SCRIPT_URL + "?code=" + encodeURIComponent(code) + "&course=" + encodeURIComponent(COURSE_KEY) + "&t=" + Date.now();
-  const res = await fetchWithTimeout(url, APPS_SCRIPT_TIMEOUT_MS);
-  if (!res.ok) throw new Error("http " + res.status);
-  return await res.json();
-}
-function setCodeStatus(msg, isError) {
-  const field = document.getElementById("codeField");
-  const status = document.getElementById("codeStatus");
-  const errorEl = document.getElementById("codeError");
-  if (isError) {
-    field.classList.add("field--error");
-    errorEl.textContent = msg;
-    status.classList.remove("is-visible"); status.textContent = "";
-  } else {
-    field.classList.remove("field--error");
-    status.textContent = msg || "";
-    if (msg) status.classList.add("is-visible"); else status.classList.remove("is-visible");
-  }
-}
-function wireAccessGate() {
+/* ---- ACCESS TOKEN GATE ---- */
+async function wireAccessGate() {
+  const gateStatus = document.getElementById("gate-status");
+  const gateForm = document.getElementById("codeField");
   const input = document.getElementById("codeInput");
   const submit = document.getElementById("codeSubmit");
-  async function attempt() {
-    const code = input.value.trim().toUpperCase();
-    if (!code) { setCodeStatus("Enter the code from your purchase email.", true); input.focus(); return; }
-    submit.disabled = true;
-    submit.innerHTML = '<span class="spinner" aria-hidden="true"></span> Checking...';
-    setCodeStatus("Checking your code with MK Global.", false);
-    let granted = false, usedCode = null;
-    try {
-      const data = await validateCodeAgainstSheet(code);
-      if (data && data.ok === true) { granted = true; usedCode = code; }
-      else if (code === FALLBACK_ACCESS_CODE) { granted = true; usedCode = code; }
-      else {
-        const reason = (data && data.status) || "invalid";
-        let msg = "That code is not recognised.";
-        if (reason === "used") msg = "That code has already been used.";
-        if (reason === "wrongCourse") msg = "That code is for a different MK Global course.";
-        setCodeStatus(msg, true);
+
+  submit.addEventListener("click", () => validateAndGrant(input.value.trim()));
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") validateAndGrant(input.value.trim());
+  });
+
+  // Already granted? Confirm the stored token has not expired before
+  // trusting it, an expired token must re-gate rather than stay open.
+  if (state.accessGranted) {
+    const stored = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (stored) {
+      try {
+        const payload = JSON.parse(base64urlDecode(stored.split(".")[0]));
+        if (payload.exp && payload.exp < Date.now()) {
+          state.accessGranted = false;
+          saveState(state);
+          localStorage.removeItem(TOKEN_STORAGE_KEY);
+        } else {
+          return;
+        }
+      } catch {
+        state.accessGranted = false;
+        saveState(state);
+        localStorage.removeItem(TOKEN_STORAGE_KEY);
       }
-    } catch(err) {
-      if (code === FALLBACK_ACCESS_CODE) { granted = true; usedCode = code; }
-      else { setCodeStatus("We could not reach the validation service. Try again, or use your fallback code if you were given one.", true); }
+    } else {
+      return;
     }
-    submit.disabled = false;
-    submit.textContent = "Unlock Course";
-    if (granted) {
-      state.accessGranted = true; state.accessCodeUsed = usedCode; saveState(state);
-      setCodeStatus("Code accepted.", false);
-      showView("view-registration");
-    } else { input.focus(); input.select(); }
   }
-  submit.addEventListener("click", attempt);
-  input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); attempt(); } });
+
+  // Check the URL for the ?token= param from the purchase email link.
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+
+  if (token) {
+    await validateAndGrant(token);
+  } else {
+    if (gateStatus) gateStatus.textContent = "Enter the access token from your purchase email.";
+    if (gateForm) gateForm.style.display = "block";
+  }
+}
+
+async function validateAndGrant(token) {
+  const gateStatus = document.getElementById("gate-status");
+  const gateForm = document.getElementById("codeField");
+  const submit = document.getElementById("codeSubmit");
+
+  if (!token) {
+    if (gateStatus) gateStatus.textContent = "Enter the access token from your purchase email.";
+    if (gateForm) gateForm.style.display = "block";
+    return;
+  }
+
+  if (gateStatus) gateStatus.textContent = "Validating your access...";
+  if (gateForm) gateForm.style.display = "none";
+  if (submit) { submit.disabled = true; submit.textContent = "Checking..."; }
+
+  try {
+    const res = await fetch(
+      VALIDATE_URL + "?token=" + encodeURIComponent(token) +
+      "&productId=" + encodeURIComponent(PRODUCT_ID)
+    );
+    const data = await res.json();
+
+    if (data.valid) {
+      state.accessGranted = true;
+      state.accessCodeUsed = token;
+      saveState(state);
+      localStorage.setItem(TOKEN_STORAGE_KEY, token);
+      const clean = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, "", clean);
+      showView("view-registration");
+    } else {
+      if (gateStatus) gateStatus.textContent =
+        "This access link is " + (data.reason && data.reason.toLowerCase().includes("expired") ? "expired" : "not valid") +
+        ". Purchase the course or paste your token below.";
+      if (gateForm) gateForm.style.display = "block";
+      if (submit) { submit.disabled = false; submit.textContent = "Verify"; }
+    }
+  } catch {
+    if (gateStatus) gateStatus.textContent =
+      "Could not verify your access. Check your connection and try again.";
+    if (gateForm) gateForm.style.display = "block";
+    if (submit) { submit.disabled = false; submit.textContent = "Verify"; }
+  }
 }
 
 function wireRegistration() {
@@ -852,7 +887,8 @@ function wireDashboardActions() {
       document.getElementById("headerProgress").textContent = "";
       document.getElementById("regForm").reset();
       document.getElementById("codeInput").value = "";
-      setCodeStatus("", false);
+      document.getElementById("gate-status").textContent = "Enter the access token from your purchase email.";
+      document.getElementById("codeField").style.display = "block";
       showView("view-access");
     }
   });
