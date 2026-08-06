@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="description" content="Temperature-Controlled Delivery online course by MK Global SA. Professional training for South African courier drivers handling cold-chain goods.">
+<meta name="theme-color" content="#1B3A5C">
+<title>Temperature-Controlled Delivery | MK Global SA</title>
+
+<style>
+:root {
+  --mk-navy: #1B3A5C;
+  --mk-blue: #2E75B6;
+  --mk-gold: #C5972C;
+  --mk-amber: #F4B740;
+  --mk-amber-bg: #FFF8E7;
+  --mk-grey-50: #F7F8FA;
+  --mk-grey-100: #ECEEF2;
+  --mk-grey-200: #D8DCE3;
+  --mk-grey-400: #8B94A3;
+  --mk-grey-700: #3A4251;
+  --mk-text: #1A2330;
+  --mk-white: #FFFFFF;
+  --mk-success: #2E8B57;
+  --mk-success-bg: #E6F4EC;
+  --mk-error: #B22222;
+  --mk-error-bg: #FBEAE8;
+  --mk-red: #B22222;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(26,35,48,0.06);
+  --shadow-md: 0 4px 12px rgba(26,35,48,0.08);
+  --shadow-lg: 0 8px 24px rgba(26,35,48,0.12);
+  --font-body: Arial, Helvetica, sans-serif;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;padding:0;font-family:var(--font-body);font-size:16px;line-height:1.6;color:var(--mk-text);background:var(--mk-grey-50);min-height:100vh;-webkit-font-smoothing:antialiased}
+.site-header{background:#000;color:var(--mk-white);padding:var(--space-3) var(--space-5);box-shadow:var(--shadow-md);position:sticky;top:0;z-index:50;border-bottom:2px solid var(--mk-gold)}
+.site-header__inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
+.brand{display:flex;align-items:center;gap:var(--space-3);text-decoration:none;color:var(--mk-white)}
+.brand__logo{height:72px;width:auto;display:block;flex-shrink:0}
+@media(max-width:480px){.brand__logo{height:56px}}
+.brand__text{font-weight:bold;font-size:15px;line-height:1.3}
+.header-progress{font-size:13px;opacity:0.9;white-space:nowrap}
+.container{max-width:720px;margin:0 auto;padding:var(--space-5) var(--space-4)}
+.container--wide{max-width:960px}
+.view{display:none}
+.view.is-active{display:block;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--mk-white);border-radius:var(--radius-lg);padding:var(--space-6);box-shadow:var(--shadow-md);border:1px solid var(--mk-grey-100)}
+.card+.card{margin-top:var(--space-5)}
+h1,h2,h3,h4{color:var(--mk-navy);line-height:1.25;margin:0 0 var(--space-4) 0}
+h1{font-size:26px;font-weight:bold}
+h2{font-size:21px;font-weight:bold;margin-top:var(--space-6)}
+h3{font-size:18px;font-weight:bold;margin-top:var(--space-5)}
+h4{font-size:16px;font-weight:bold}
+@media(min-width:640px){h1{font-size:32px}h2{font-size:24px}}
+p{margin:0 0 var(--space-4) 0}
+.lead{font-size:17px;color:var(--mk-grey-700)}
+.eyebrow{display:inline-block;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:var(--mk-gold);margin-bottom:var(--space-3)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);min-height:48px;padding:12px 24px;border-radius:var(--radius-md);font-family:inherit;font-size:16px;font-weight:bold;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:all 0.15s ease;line-height:1.2;text-align:center}
+.btn:focus-visible{outline:3px solid var(--mk-amber);outline-offset:2px}
+.btn--primary{background:var(--mk-navy);color:var(--mk-white);border-color:var(--mk-navy)}
+.btn--primary:hover{background:#142c47;border-color:#142c47}
+.btn--primary:active{transform:translateY(1px)}
+.btn--gold{background:var(--mk-gold);color:var(--mk-navy);border-color:var(--mk-gold)}
+.btn--gold:hover{background:#b0861f;border-color:#b0861f}
+.btn--secondary{background:var(--mk-white);color:var(--mk-navy);border-color:var(--mk-navy)}
+.btn--secondary:hover{background:var(--mk-grey-50)}
+.btn--full{width:100%}
+.btn:disabled{opacity:0.45;cursor:not-allowed;transform:none}
+.field{margin-bottom:var(--space-5)}
+.field label{display:block;font-weight:bold;margin-bottom:var(--space-2);color:var(--mk-grey-700);font-size:15px}
+.field input,.field select,.field textarea{width:100%;min-height:48px;padding:12px 14px;border:2px solid var(--mk-grey-200);border-radius:var(--radius-md);font-family:inherit;font-size:16px;color:var(--mk-text);background:var(--mk-white);transition:border-color 0.15s ease}
+.field textarea{min-height:80px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--mk-blue);box-shadow:0 0 0 3px rgba(46,117,182,0.15)}
+.field__hint{font-size:13px;color:var(--mk-grey-400);margin-top:var(--space-2)}
+.field--error input,.field--error select{border-color:var(--mk-error);background:var(--mk-error-bg)}
+.field__error{display:none;font-size:13px;color:var(--mk-error);margin-top:var(--space-2);font-weight:bold}
+.field--error .field__error{display:block}
+.field__status{display:none;font-size:13px;color:var(--mk-grey-700);margin-top:var(--space-2)}
+.field__status.is-visible{display:block}
+.outcomes{list-style:none;padding:0;margin:0 0 var(--space-5) 0}
+.outcomes li{padding:var(--space-3) 0 var(--space-3) 36px;position:relative;border-bottom:1px solid var(--mk-grey-100);font-size:15px}
+.outcomes li:last-child{border-bottom:none}
+.outcomes li::before{content:"";position:absolute;left:0;top:16px;width:22px;height:22px;background:var(--mk-gold);border-radius:50%;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><polyline points='5 10 9 14 15 6' stroke='%231B3A5C' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-size:22px;background-repeat:no-repeat}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-bottom:var(--space-5)}
+.meta-pill{background:var(--mk-grey-100);color:var(--mk-grey-700);padding:6px 14px;border-radius:100px;font-size:13px;font-weight:bold}
+.lesson-list{list-style:none;padding:0;margin:0}
+.lesson-list__item{background:var(--mk-white);border:1px solid var(--mk-grey-100);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-3);display:flex;align-items:center;gap:var(--space-4);box-shadow:var(--shadow-sm);transition:box-shadow 0.15s ease}
+.lesson-list__item--clickable{cursor:pointer}
+.lesson-list__item--clickable:hover{box-shadow:var(--shadow-md);border-color:var(--mk-blue)}
+.lesson-list__item--locked{opacity:0.55}
+.lesson-list__item--done{background:var(--mk-success-bg);border-color:var(--mk-success)}
+.lesson-num{width:40px;height:40px;border-radius:50%;background:var(--mk-navy);color:var(--mk-white);display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:16px;flex-shrink:0}
+.lesson-list__item--done .lesson-num{background:var(--mk-success)}
+.lesson-list__item--locked .lesson-num{background:var(--mk-grey-400)}
+.lesson-info{flex:1;min-width:0}
+.lesson-info__title{font-weight:bold;color:var(--mk-navy);margin-bottom:2px;font-size:15px;line-height:1.3}
+.lesson-info__meta{font-size:13px;color:var(--mk-grey-400)}
+.lesson-status{font-size:13px;font-weight:bold;color:var(--mk-grey-400);flex-shrink:0;display:flex;align-items:center;gap:6px}
+.lesson-list__item--done .lesson-status{color:var(--mk-success)}
+.lesson-list__item--current{border-left:4px solid var(--mk-blue)}
+.lesson-list__item--current .lesson-status{color:var(--mk-blue)}
+.lock-icon{display:inline-block;width:14px;height:14px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='%238B94A3' d='M10 2a4 4 0 0 0-4 4v2H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-1V6a4 4 0 0 0-4-4zm-2 6V6a2 2 0 1 1 4 0v2H8z'/></svg>");background-size:contain;background-repeat:no-repeat}
+.assessment-card{background:var(--mk-white);border:2px solid var(--mk-grey-200);border-radius:var(--radius-md);padding:var(--space-5);margin-top:var(--space-5);display:flex;align-items:center;gap:var(--space-4);box-shadow:var(--shadow-sm);transition:all 0.15s ease}
+.assessment-card--locked{opacity:0.7}
+.assessment-card--unlocked{border-color:var(--mk-gold);background:#FAF0D8;cursor:pointer}
+.assessment-card--unlocked:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.assessment-card__badge{width:48px;height:48px;border-radius:50%;background:var(--mk-grey-400);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--mk-white);font-weight:bold;font-size:18px}
+.assessment-card--unlocked .assessment-card__badge{background:var(--mk-gold);color:var(--mk-navy)}
+.assessment-card__body{flex:1;min-width:0}
+.assessment-card__title{font-weight:bold;color:var(--mk-navy);font-size:16px;margin-bottom:2px}
+.assessment-card__meta{font-size:13px;color:var(--mk-grey-700)}
+.assessment-card__action{font-size:13px;font-weight:bold;color:var(--mk-grey-400);flex-shrink:0}
+.assessment-card--unlocked .assessment-card__action{color:var(--mk-navy)}
+.progress{margin:var(--space-4) 0 var(--space-5) 0}
+.progress__label{display:flex;justify-content:space-between;font-size:13px;font-weight:bold;color:var(--mk-grey-700);margin-bottom:6px}
+.progress__bar{width:100%;height:10px;background:var(--mk-grey-100);border-radius:100px;overflow:hidden}
+.progress__fill{height:100%;background:var(--mk-gold);border-radius:100px;width:0%;transition:width 0.3s ease}
+.progress__fill--complete{background:var(--mk-success)}
+.callout{border-left:4px solid var(--mk-blue);background:#EDF4FB;padding:var(--space-4);border-radius:var(--radius-sm);margin:var(--space-5) 0;font-size:15px}
+.callout--warning{border-left-color:var(--mk-amber);background:var(--mk-amber-bg)}
+.callout--gold{border-left-color:var(--mk-gold);background:#FAF0D8}
+.callout--success{border-left-color:var(--mk-success);background:var(--mk-success-bg)}
+.callout--do{border-left-color:var(--mk-success);background:var(--mk-success-bg)}
+.callout--dont{border-left-color:var(--mk-red);background:var(--mk-error-bg)}
+.callout__title{font-weight:bold;color:var(--mk-navy);margin-bottom:var(--space-2);display:block}
+.bullet-list{margin:0 0 var(--space-4) 0;padding-left:20px}
+.bullet-list li{margin-bottom:6px}
+.checklist{list-style:none;padding:0;margin:0 0 var(--space-4) 0}
+.checklist li{padding:var(--space-2) 0;display:flex;align-items:flex-start;gap:var(--space-3)}
+.checklist input[type="checkbox"]{width:22px;height:22px;accent-color:var(--mk-success);flex-shrink:0;margin-top:2px;cursor:pointer}
+.placeholder-box{background:var(--mk-grey-100);border:2px dashed var(--mk-grey-200);border-radius:var(--radius-md);padding:var(--space-5);text-align:center;color:var(--mk-grey-700);margin:var(--space-5) 0;font-size:14px}
+.placeholder-box strong{display:block;color:var(--mk-navy);margin-bottom:6px}
+.diagram-wrap{margin:var(--space-5) 0;border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-md);border:1px solid var(--mk-grey-200)}
+.diagram-wrap img{width:100%;height:auto;display:block}
+.diagram-wrap__caption{background:var(--mk-navy);color:var(--mk-white);padding:var(--space-3) var(--space-4);font-size:13px;font-weight:bold;text-align:center}
+.site-footer{text-align:center;padding:var(--space-6) var(--space-4);color:var(--mk-grey-400);font-size:13px;margin-top:var(--space-7)}
+.text-center{text-align:center}
+.mt-5{margin-top:var(--space-5)}
+.spinner{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,0.3);border-top-color:var(--mk-white);border-radius:50%;animation:spin 0.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mcq-option{display:block;width:100%;text-align:left;padding:var(--space-4);margin-bottom:var(--space-2);background:var(--mk-white);border:2px solid var(--mk-grey-200);border-radius:var(--radius-md);font-family:inherit;font-size:15px;cursor:pointer;transition:all 0.15s ease}
+.mcq-option:hover{border-color:var(--mk-blue);background:#f0f6ff}
+.mcq-option--selected{border-color:var(--mk-blue);background:#e8f0fb}
+.mcq-option--correct{border-color:var(--mk-success);background:var(--mk-success-bg)}
+.mcq-option--incorrect{border-color:var(--mk-error);background:var(--mk-error-bg)}
+.mcq-option:disabled{cursor:default;opacity:0.9}
+.sa-field{margin-bottom:var(--space-5)}
+.sa-field label{display:block;font-weight:bold;margin-bottom:var(--space-2);color:var(--mk-navy)}
+.sa-field textarea{width:100%;min-height:100px;padding:var(--space-3);border:2px solid var(--mk-grey-200);border-radius:var(--radius-md);font-family:inherit;font-size:15px;resize:vertical}
+.sa-field textarea:focus{outline:none;border-color:var(--mk-blue);box-shadow:0 0 0 3px rgba(46,117,182,0.15)}
+.sa-criteria{background:var(--mk-amber-bg);border-left:4px solid var(--mk-gold);padding:var(--space-4);border-radius:var(--radius-sm);margin-top:var(--space-3);font-size:14px;display:none}
+.result-box{text-align:center;padding:var(--space-6);background:var(--mk-white);border-radius:var(--radius-lg);border:2px solid var(--mk-grey-200);box-shadow:var(--shadow-md)}
+.result-box--pass{border-color:var(--mk-success);background:var(--mk-success-bg)}
+.result-box--fail{border-color:var(--mk-error);background:var(--mk-error-bg)}
+.result-score{font-size:48px;font-weight:bold;color:var(--mk-navy)}
+.kc-question{background:var(--mk-white);border:1px solid var(--mk-grey-200);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-4)}
+.kc-question__text{font-weight:bold;color:var(--mk-navy);margin-bottom:var(--space-3)}
+.action-plan-section{margin-bottom:var(--space-6)}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="#" onclick="event.preventDefault();if(state.learner){showView('view-dashboard');renderDashboard();}">
+      <img src="MK_LOGO.png" alt="MK Global" class="brand__logo" onerror="this.style.display='none'">
+      <div class="brand__text">MK Global SA<br><span style="font-size:12px;font-weight:normal;opacity:0.8">Courier Driver Training</span></div>
+    </a>
+    <div class="header-progress" id="headerProgress"></div>
+  </div>
+</header>
+
+<main class="container">
+
+<!-- ACCESS GATE -->
+<div class="view is-active" id="view-access">
+  <div class="card text-center">
+    <span class="eyebrow">Restricted access</span>
+    <h1 id="gate-title">Temperature-Controlled Delivery</h1>
+    <p class="lead">Stream 4 of the Courier Driver Training programme</p>
+    <div class="callout callout--warning"><span class="callout__title">Prerequisite</span>This stream builds on the Core Courier Driver Fundamentals (Stream 1). Please complete Stream 1 before starting this course.</div>
+    <p id="gate-status">Checking your access...</p>
+    <div class="field" id="codeField" style="display:none;">
+      <label for="codeInput">Paste your access token</label>
+      <input type="text" id="codeInput" autocomplete="off" placeholder="Paste the token from your email">
+      <button class="btn btn--primary btn--full" id="codeSubmit" type="button">Verify</button>
+      <p class="field__hint text-center mt-5">You received this token by email after purchasing. <a href="https://mkglobal.co.za/products.html">Purchase this course</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTRATION -->
+<div class="view" id="view-registration">
+  <div class="card">
+    <span class="eyebrow">Almost there</span>
+    <h1>Tell us about yourself</h1>
+    <p>Your name will appear on your certificate if you pass the assessment.</p>
+    <form id="regForm" novalidate>
+      <div class="field" id="regNameField">
+        <label for="regName">Full name</label>
+        <input type="text" id="regName" placeholder="e.g. Sipho Dlamini" autocomplete="name" required>
+        <div class="field__error">Please enter your full name.</div>
+      </div>
+      <div class="field" id="regEmailField">
+        <label for="regEmail">Email address</label>
+        <input type="email" id="regEmail" placeholder="you@example.com" autocomplete="email" required>
+        <div class="field__error">Please enter a valid email address.</div>
+      </div>
+      <div class="field" id="regCompanyField">
+        <label for="regCompany">Company (optional)</label>
+        <input type="text" id="regCompany" placeholder="e.g. FastTrack Couriers">
+      </div>
+      <button type="submit" class="btn btn--primary btn--full">Start the Course</button>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="view" id="view-dashboard">
+  <div class="card">
+    <span class="eyebrow">Stream 4: Temperature-Controlled Delivery</span>
+    <h1>Your Course Dashboard</h1>
+    <p id="dashGreeting"></p>
+    <div class="progress">
+      <div class="progress__label"><span id="progressText">0 of 8 sessions complete</span><span id="progressPercent">0%</span></div>
+      <div class="progress__bar"><div class="progress__fill" id="progressFill" role="progressbar" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0"></div></div>
+    </div>
+    <h2 style="margin-top:var(--space-4)">Sessions</h2>
+    <ul class="lesson-list" id="lessonList"></ul>
+    <div class="assessment-card assessment-card--locked" id="assessmentCard">
+      <div class="assessment-card__badge" id="assessmentBadge">&#9734;</div>
+      <div class="assessment-card__body">
+        <div class="assessment-card__title">Final Assessment</div>
+        <div class="assessment-card__meta" id="assessmentMeta">15 questions, 80% pass mark. Complete all sessions to unlock.</div>
+      </div>
+      <div class="assessment-card__action" id="assessmentAction"><span class="lock-icon" aria-hidden="true"></span> Locked</div>
+    </div>
+    <div style="margin-top:var(--space-6);text-align:center">
+      <button class="btn btn--secondary" id="resetProgress" style="font-size:13px">Reset all progress</button>
+    </div>
+  </div>
+</div>
+
+<!-- SESSION VIEW -->
+<div class="view" id="view-lesson">
+  <div class="card">
+    <button class="btn btn--secondary" id="backToDash" style="margin-bottom:var(--space-4)">&larr; Back to Dashboard</button>
+    <span class="eyebrow" id="lessonEyebrow"></span>
+    <h1 id="lesson-title"></h1>
+    <div id="lessonBody"></div>
+  </div>
+</div>
+
+<!-- ASSESSMENT VIEW -->
+<div class="view" id="view-assessment">
+  <div class="card">
+    <button class="btn btn--secondary" id="backToDashFromAss" style="margin-bottom:var(--space-4)">&larr; Back to Dashboard</button>
+    <span class="eyebrow">Final Assessment</span>
+    <h1>Temperature-Controlled Delivery</h1>
+    <div id="ass-intro">
+      <p class="lead">This assessment has 15 questions: 10 multiple choice and 5 short answer. You need 80% to pass and earn your Training Attended certificate.</p>
+      <div class="meta-row">
+        <span class="meta-pill">15 questions</span>
+        <span class="meta-pill">80% pass mark</span>
+        <span class="meta-pill">10 MCQ + 5 short answer</span>
+      </div>
+      <button class="btn btn--gold btn--full" id="startAssBtn">Begin Assessment</button>
+    </div>
+    <div id="ass-running" style="display:none"></div>
+    <div id="ass-result" style="display:none"></div>
+  </div>
+</div>
+
+<!-- ACTION PLAN VIEW -->
+<div class="view" id="view-actionplan">
+  <div class="card">
+    <button class="btn btn--secondary" id="backToDashFromAP" style="margin-bottom:var(--space-4)">&larr; Back to Dashboard</button>
+    <span class="eyebrow">Your Action Plan</span>
+    <h1>Putting Your Training Into Practice</h1>
+    <p class="lead">This Action Plan turns what you have learned into daily habits that protect the cold chain and the people who depend on it.</p>
+    <div id="actionPlanBody"></div>
+  </div>
+</div>
+
+<!-- CERTIFICATE VIEW -->
+<div class="view" id="view-certificate">
+  <div class="card text-center">
+    <span class="eyebrow">Congratulations</span>
+    <h1>You passed!</h1>
+    <p id="certMessage"></p>
+    <div id="certPreview" style="margin:var(--space-5) 0;padding:var(--space-6);border:2px solid var(--mk-gold);border-radius:var(--radius-lg);background:var(--mk-white)">
+      <p style="font-size:13px;text-transform:uppercase;letter-spacing:2px;color:var(--mk-grey-400);margin-bottom:var(--space-3)">MK Global SA (Pty) Ltd</p>
+      <h2 style="color:var(--mk-navy);margin-top:0">Certificate of Training Attended</h2>
+      <p style="font-size:15px;color:var(--mk-grey-700)">This certifies that</p>
+      <p style="font-size:24px;font-weight:bold;color:var(--mk-navy)" id="certName"></p>
+      <p style="font-size:15px;color:var(--mk-grey-700)">has completed the</p>
+      <p style="font-size:18px;font-weight:bold;color:var(--mk-blue)">Temperature-Controlled Delivery</p>
+      <p style="font-size:15px;color:var(--mk-grey-700)">of the Courier Driver Training programme.</p>
+      <p style="font-size:13px;color:var(--mk-grey-400);margin-top:var(--space-5)">Date: <span id="certDate"></span> | Ref: <span id="certRef"></span></p>
+      <p style="font-size:11px;color:var(--mk-grey-400);margin-top:var(--space-3)">This certificate confirms attendance of a professional development programme. It is not a formal SAQA qualification and does not replace any licence, permit, or certificate required by law.</p>
+    </div>
+    <button class="btn btn--gold btn--full" id="downloadCert">Download Certificate (PDF)</button>
+    <p class="field__hint mt-5" id="emailStatus"></p>
+    <button class="btn btn--secondary btn--full mt-5" id="backToDashFromCert">&larr; Back to Dashboard</button>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2026 MK Global SA (Pty) Ltd. All rights reserved.<br>info@mkglobal.co.za</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+"use strict";
+
+/* ---- CONFIGURATION ---- */
+/* Token-based access, issued by the Paystack webhook after purchase.
+   See api/courses/webhook.js and api/courses/validate.js in the
+   mkglobal-website repo. PRODUCT_ID must match api/_lib/products.js. */
+const PRODUCT_ID = "courier-tempcontrol";
+const VALIDATE_URL = "https://mkglobal.co.za/api/courses/validate";
+const BUY_URL = "https://mkglobal.co.za/products.html";
+const TOKEN_STORAGE_KEY = "mkg_access_token";
+
+function base64urlDecode(str) {
+  str = str.replace(/-/g, "+").replace(/_/g, "/");
+  while (str.length % 4) str += "=";
+  return atob(str);
+}
+
+const EMAILJS_CONFIG = {
+  enabled: false,
+  serviceId: "",
+  templateId: "",
+  publicKey: ""
+};
+
+const SESSIONS = [
+  { id: 1, title: "The Cold Chain",                     minutes: 12 },
+  { id: 2, title: "The Equipment",                      minutes: 12 },
+  { id: 3, title: "Monitoring and Recording",           minutes: 15 },
+  { id: 4, title: "Protecting the Chain on the Road",   minutes: 12 },
+  { id: 5, title: "When the Temperature Goes Wrong",    minutes: 15 },
+  { id: 6, title: "Good Distribution Practice",         minutes: 12 },
+  { id: 7, title: "Documents and Chain of Custody",     minutes: 12 },
+  { id: 8, title: "Quality and the Customer",           minutes: 12 }
+];
+
+const SESSION_CONTENT = {
+1: {
+  intro: "Temperature-sensitive goods must be kept within a set temperature range the whole way from collection to delivery. The cold chain is the unbroken sequence of correct temperatures. Break it, and the goods can be ruined, sometimes without any visible sign.",
+  outcomes: [
+    "Define temperature-sensitive goods and the cold chain.",
+    "Identify the main temperature ranges.",
+    "Explain why staying in range matters so much."
+  ],
+  sections: [
+    { h: "The temperature ranges", body: "<div class='diagram-wrap'><img src='TC_Diagram_1_TemperatureRanges.png' alt='Three temperature ranges: Frozen (below minus 15 degrees), Chilled/Cold Chain (2 to 8 degrees for medicines and vaccines), Controlled Room Temperature (15 to 25 degrees).' loading='lazy'><div class='diagram-wrap__caption'>The Three Main Temperature Ranges</div></div><p>There are three broad ranges:</p><ul class='bullet-list'><li><strong>Frozen:</strong> below minus fifteen degrees. Used for frozen food and some medical products.</li><li><strong>Chilled (cold chain):</strong> about two to eight degrees. This covers many medicines, vaccines, and fresh food.</li><li><strong>Controlled room temperature:</strong> about fifteen to twenty-five degrees. For goods that must not freeze or overheat.</li></ul>" },
+    { h: "Why the cold chain matters", body: "<p>The exact range is set by the sender and printed on the goods or the documents. Your job is to keep the goods within that range for the entire journey. Never guess.</p><div class='callout callout--warning'><span class='callout__title'>Invisible damage</span>Many temperature-sensitive goods show no visible sign of damage when the cold chain breaks. A vaccine that warms up may look the same but be completely useless. Food that thaws and refreezes may carry bacteria you cannot see. The cold chain is the only protection.</div>" }
+  ],
+  notes: "",
+  takeaway: "The cold chain is the unbroken sequence of correct temperatures from collection to delivery. Break it, and the goods may be ruined without any visible sign."
+},
+2: {
+  intro: "Different equipment keeps goods at the right temperature. Know your tools and always check them before you load. The cold chain is only as strong as its weakest link.",
+  outcomes: [
+    "Identify the main types of cold-chain equipment.",
+    "Check that equipment is working and pre-cooled before loading.",
+    "Understand that the cold chain is only as strong as its weakest link."
+  ],
+  sections: [
+    { h: "Your cold-chain tools", body: "<div class='diagram-wrap'><img src='TC_Diagram_2_Equipment.png' alt='Cold-chain equipment: refrigerated vehicle, insulated cold box, and temperature monitor.' loading='lazy'><div class='diagram-wrap__caption'>Cold-Chain Equipment</div></div><ul class='bullet-list'><li><strong>Refrigerated vehicle:</strong> keeps a whole load at a set temperature. The unit must be running and at the right temperature before you load.</li><li><strong>Insulated cold box:</strong> for smaller cold-chain parcels. Must be pre-cooled with gel packs or dry ice as required.</li><li><strong>Temperature monitor:</strong> checks and records the temperature. Can be a digital logger, a probe, or a simple min-max thermometer.</li></ul>" },
+    { h: "Pre-load check", body: "<p>Before loading any temperature-sensitive goods, run through this check:</p><ul class='checklist'><li><input type='checkbox'><span>The unit is running.</span></li><li><input type='checkbox'><span>It is at the right temperature for the load.</span></li><li><input type='checkbox'><span>The doors and seals are sound (no gaps or damage).</span></li><li><input type='checkbox'><span>The temperature monitor is working.</span></li></ul><div class='callout callout--dont'><span class='callout__title'>Never do this</span>Loading warm goods into a warm vehicle, or relying on a unit that is not yet cold, breaks the chain from the start. Always pre-cool first.</div>" }
+  ],
+  notes: "",
+  takeaway: "Check and pre-cool your equipment before loading. A warm start means a broken chain from the beginning."
+},
+3: {
+  intro: "Checking the temperature is only half the job. If you do not write it down, there is no proof the cold chain held. An honest, complete record protects the goods, the customer, and you.",
+  outcomes: [
+    "Monitor temperature at the key points of a journey.",
+    "Record readings correctly with time and date.",
+    "Understand why an honest, complete record matters."
+  ],
+  sections: [
+    { h: "The monitoring sequence", body: "<div class='diagram-wrap'><img src='TC_Diagram_3_Monitoring.png' alt='Four-step monitoring sequence: 1. Check before loading, 2. Check at key points, 3. Record with time and date, 4. Keep the record as proof.' loading='lazy'><div class='diagram-wrap__caption'>Temperature Monitoring Sequence</div></div><p>Follow this sequence on every cold-chain journey:</p><ul class='bullet-list'><li><strong>1. Check before loading</strong> that equipment is pre-cooled to the right range.</li><li><strong>2. Check at key points:</strong> at collection, during the journey, and at delivery.</li><li><strong>3. Record the reading</strong> with the time and date.</li><li><strong>4. Keep the record</strong> as proof that the cold chain held.</li></ul><p>For medicines, records are often required at least twice a day. The sender's instructions always set the rule.</p>" },
+    { h: "Why honest recording matters", body: "<div class='callout callout--gold'><span class='callout__title'>The record is your evidence</span>If a customer or a regulator ever questions whether goods arrived safely, your temperature record is the only proof. A complete, honest log protects the goods, the sender, the customer, and you. Hiding a bad reading could put a patient or a family at risk.</div>" }
+  ],
+  notes: "",
+  takeaway: "Check, record, keep. Without a written record, nobody can prove the cold chain held. Record honestly, every time."
+},
+4: {
+  intro: "Even with good equipment, careless habits can break the cold chain. These habits keep your goods in range during the journey.",
+  outcomes: [
+    "Load temperature-sensitive goods quickly and correctly.",
+    "Minimise the time doors are open.",
+    "Plan the journey to protect the cold chain."
+  ],
+  sections: [
+    { h: "Good cold-chain habits", body: "<ul class='bullet-list'><li><strong>Load quickly</strong> so goods spend the least possible time out of a controlled temperature.</li><li><strong>Keep doors closed</strong> as much as possible. Every time you open the doors, cold air escapes and the unit works harder.</li><li><strong>Never leave goods in the sun</strong> or a hot vehicle cab, even for a moment.</li><li><strong>Plan your round</strong> so cold-chain deliveries are not left until last on a hot day.</li><li><strong>Plan the order of access</strong> so doors are open for the shortest time at each stop.</li></ul>" },
+    { h: "The door discipline", body: "<p>Opening the doors of a refrigerated vehicle repeatedly lets the cold out and makes the unit work harder to recover. On a hot day, the temperature inside can rise several degrees in just a few minutes with the doors open.</p><div class='callout callout--do'><span class='callout__title'>Good practice</span>Know which parcels you need before you open the door. Get them out quickly and close the door immediately. On a multi-stop round, this single habit can be the difference between a cold chain that holds and one that breaks.</div>" }
+  ],
+  notes: "What is one handling habit you will improve to protect the cold chain?",
+  takeaway: "Load fast, keep doors closed, never leave goods in the sun, and plan your round so cold-chain stops come first. These habits protect the chain."
+},
+5: {
+  intro: "Sometimes things go wrong: a unit fails, a journey is delayed, or a reading goes out of range. What matters is handling it correctly and honestly. Never guess, and never cover it up.",
+  outcomes: [
+    "Recognise a temperature deviation.",
+    "Follow a clear process when the cold chain is broken.",
+    "Understand why honesty about deviations is essential."
+  ],
+  sections: [
+    { h: "The deviation response", body: "<div class='diagram-wrap'><img src='TC_Diagram_4_Deviation.png' alt='Deviation response flow: Do not ignore it, check equipment, record the deviation, contact dispatcher, never deliver spoiled goods.' loading='lazy'><div class='diagram-wrap__caption'>Temperature Deviation Response Flow</div></div><p>When the temperature goes out of range, follow this process:</p><ul class='bullet-list'><li><strong>1. Do not ignore it.</strong> A deviation that is hidden is a deviation that can harm someone.</li><li><strong>2. Check the equipment</strong> to see if it can be corrected safely (a door left ajar, a unit switched off by accident).</li><li><strong>3. Record the deviation</strong> with the temperature, time, and how long it lasted.</li><li><strong>4. Contact your dispatcher</strong> immediately. Report what happened and what you have done.</li><li><strong>5. Never deliver goods you know are spoiled.</strong> The decision on whether goods are still usable belongs to the sender or a qualified person, not the driver.</li></ul>" },
+    { h: "Quarantine", body: "<p>If told to, you may need to quarantine the affected goods: keep them separate from other stock and clearly marked until a decision is made. Never mix quarantined goods back in with good stock.</p><div class='callout callout--dont'><span class='callout__title'>Never do this</span>Do not decide on your own that goods are \"probably fine\" after a deviation. You cannot tell by looking whether a vaccine is still effective or whether food is safe. That decision belongs to the sender.</div>" }
+  ],
+  notes: "",
+  takeaway: "Do not ignore a deviation, do not cover it up, and do not guess whether goods are still safe. Record it, report it, and let the sender decide."
+},
+6: {
+  intro: "The safe distribution of medicines follows a set of principles called Good Distribution Practice, or GDP. You do not need to be an expert in GDP, but you are part of it every time you handle a medicine delivery.",
+  outcomes: [
+    "Explain what Good Distribution Practice means in plain terms.",
+    "Describe the driver's part in it.",
+    "Understand why these principles exist."
+  ],
+  sections: [
+    { h: "GDP in plain terms", body: "<p>Good Distribution Practice means:</p><ul class='bullet-list'><li>Medicines must be kept in the right conditions throughout distribution.</li><li>They must be handled by people who know what they are doing.</li><li>They must travel in suitable, clean equipment.</li><li>Temperature must be monitored and recorded.</li><li>Goods must be traceable from start to finish.</li></ul><p>The driver contributes to several of these directly: keeping the temperature right, recording it, keeping the goods clean and secure, and maintaining the chain of custody.</p>" },
+    { h: "Your part in GDP", body: "<p>In South Africa, the safe handling of medicines is overseen within the broader pharmacy and health regulatory framework. Senders who deal in medicines will have their own GDP requirements that you must follow.</p><div class='callout callout--gold'><span class='callout__title'>Think of it this way</span>GDP is not extra paperwork. It is a system that makes sure the medicine a patient takes is the same quality as when it left the factory. Every time you keep the temperature right, record it honestly, and hand over the documents, you are part of that system.</div>" }
+  ],
+  notes: "Write down one GDP principle you directly affect as a driver:",
+  takeaway: "GDP is a system that protects patients. You are part of it every time you keep the temperature right, record it, and maintain the chain of custody."
+},
+7: {
+  intro: "Temperature-sensitive goods travel with documents that say what they are, the temperature they need, and the temperature record. Chain of custody means an unbroken, recorded trail of who had the goods and in what condition.",
+  outcomes: [
+    "Identify the documents that accompany cold-chain goods.",
+    "Explain what chain of custody means.",
+    "Hand over goods and records correctly."
+  ],
+  sections: [
+    { h: "What travels with the goods", body: "<p>Cold-chain documents typically include:</p><ul class='bullet-list'><li>The delivery documents identifying the goods.</li><li>The required temperature range.</li><li>The temperature record showing readings taken during the journey.</li></ul><p>These documents and the goods must stay together from collection to delivery. The temperature record is as important as the goods themselves.</p>" },
+    { h: "A clean handover", body: "<p>Each handover is a point where the goods and their records pass from one responsible person to the next. A clean handover includes:</p><ul class='checklist'><li><input type='checkbox'><span>Confirm the right recipient.</span></li><li><input type='checkbox'><span>Hand over the goods and the temperature record together.</span></li><li><input type='checkbox'><span>Get confirmation of receipt.</span></li><li><input type='checkbox'><span>Record the handover.</span></li></ul><div class='callout'><span class='callout__title'>Why this matters</span>A clear chain of custody means that if anything is ever questioned, everyone can see exactly what happened and when. It protects the goods, the sender, the customer, and you.</div>" }
+  ],
+  notes: "",
+  takeaway: "The goods and their records travel together. Each handover is recorded. A clear chain of custody protects everyone."
+},
+8: {
+  intro: "Behind every cold-chain delivery is a person: a patient waiting for medicine, a family who will eat the food. Your care has real consequences. Quality means doing every step right, every time.",
+  outcomes: [
+    "Explain why quality and compliance matter in cold-chain work.",
+    "Describe the trust placed in the driver.",
+    "Set personal goals for cold-chain excellence."
+  ],
+  sections: [
+    { h: "What quality looks like", body: "<p>Quality in cold-chain work means doing every step right, every time:</p><ul class='checklist'><li><input type='checkbox'><span>Pre-cool the equipment.</span></li><li><input type='checkbox'><span>Load quickly.</span></li><li><input type='checkbox'><span>Monitor and record honestly.</span></li><li><input type='checkbox'><span>Handle deviations correctly.</span></li><li><input type='checkbox'><span>Keep clean documents.</span></li><li><input type='checkbox'><span>Follow the sender's instructions and the law.</span></li></ul>" },
+    { h: "The trust placed in you", body: "<p>Compliance means following the sender's instructions and the law. The reward is trust: senders trust you with valuable and sensitive goods, and customers and patients trust that what arrives is safe to use.</p><div class='callout callout--success'><span class='callout__title'>Your commitment</span>Every correct temperature reading, every honest record, every clean handover adds up. Over time, they build a reputation that makes you the driver people trust with their most important deliveries.</div>" }
+  ],
+  notes: "",
+  takeaway: "Quality is doing every step right, every time. The patient or customer at the end of the chain is relying on you."
+}
+};
+
+const KNOWLEDGE_CHECKS = {
+1: [
+  { q: "What is the cold chain?", opts: ["A type of refrigerator","The unbroken sequence of correct temperatures from collection to delivery","A brand of cold box"], correct: 1 },
+  { q: "What temperature range covers most medicines and vaccines?", opts: ["Below minus fifteen degrees","About two to eight degrees","Fifteen to twenty-five degrees"], correct: 1 },
+  { q: "Can you always see when the cold chain has been broken?", opts: ["Yes, the goods will look damaged","No, many goods show no visible sign of damage","Only if the goods have thawed completely"], correct: 1 }
+],
+2: [
+  { q: "When should a refrigerated vehicle or cold box be cooled?", opts: ["After loading","Before loading","It does not matter"], correct: 1 },
+  { q: "What should you check before loading cold-chain goods?", opts: ["Only the fuel level","That the unit is running and at the right temperature","That the vehicle is clean inside"], correct: 1 },
+  { q: "What happens if you load into warm equipment?", opts: ["The goods will cool down the equipment","The cold chain breaks from the start","Nothing, the unit will catch up"], correct: 1 }
+],
+3: [
+  { q: "After checking the temperature, what must you do?", opts: ["Nothing more","Tell a colleague","Record the reading with the time and date"], correct: 2 },
+  { q: "Why does honest recording matter?", opts: ["For invoicing purposes","Because hiding a bad reading could put someone at risk","It is optional but recommended"], correct: 1 },
+  { q: "When should you check the temperature?", opts: ["Only at the end of the journey","At collection, during the journey, and at delivery","Only if you suspect a problem"], correct: 1 }
+],
+4: [
+  { q: "How do you keep the cold in during a multi-stop round?", opts: ["Leave the doors open for airflow","Turn the unit off between stops","Minimise the time doors are open"], correct: 2 },
+  { q: "Where should you never leave temperature-sensitive goods?", opts: ["In the cold box","In the sun or a hot cab","In the load area"], correct: 1 },
+  { q: "On a hot day, cold-chain deliveries should be:", opts: ["Done last to save time","Done first before the heat builds","Done in any order"], correct: 1 }
+],
+5: [
+  { q: "You notice the temperature is out of range. What should you do first?", opts: ["Ignore it if the goods look fine","Do not ignore it; check, record, and report","Adjust the record to look normal"], correct: 1 },
+  { q: "Who decides whether goods are still usable after a deviation?", opts: ["The driver","The sender or a qualified person","The customer"], correct: 1 },
+  { q: "Should you deliver goods you know are spoiled?", opts: ["Yes, to avoid wasting the trip","Only if the customer agrees","Never"], correct: 2 }
+],
+6: [
+  { q: "What does GDP stand for?", opts: ["General Delivery Procedure","Good Distribution Practice","Global Drug Policy"], correct: 1 },
+  { q: "Which of these is a GDP principle?", opts: ["Deliver as fast as possible","Medicines must be traceable from start to finish","Always use the cheapest packaging"], correct: 1 },
+  { q: "Is the driver part of GDP?", opts: ["No, GDP is for pharmacists only","Yes, the driver directly affects several GDP principles","Only if carrying vaccines"], correct: 1 }
+],
+7: [
+  { q: "What must travel with cold-chain goods?", opts: ["Only the delivery address","The goods and the temperature record together","Nothing special"], correct: 1 },
+  { q: "What does chain of custody mean?", opts: ["The chain used to lock the vehicle","An unbroken, recorded trail of who had the goods and in what condition","A type of insurance"], correct: 1 },
+  { q: "What does a clean handover include?", opts: ["Dropping the parcel at the door","Confirming the recipient, handing over goods and records, and recording the handover","Calling ahead to say you are coming"], correct: 1 }
+],
+8: [
+  { q: "Why does cold-chain work matter so much?", opts: ["It pays more than normal delivery","Behind every delivery is a patient or customer relying on it","It is faster than other work"], correct: 1 },
+  { q: "What does quality in cold-chain work mean?", opts: ["Going fast","Doing every step right, every time","Using the most expensive equipment"], correct: 1 },
+  { q: "What builds trust in a cold-chain driver?", opts: ["Driving fast","Every correct reading, honest record, and clean handover","Having the newest vehicle"], correct: 1 }
+]
+};
+
+const MCQ_QUESTIONS = [
+  { q: "What is the cold chain?", opts: ["A type of refrigerator","The unbroken sequence of correct temperatures from collection to delivery","A brand of cold box"] },
+  { q: "Chilled or cold-chain goods are usually kept at about:", opts: ["Below minus fifteen degrees","Fifteen to twenty-five degrees","Two to eight degrees"] },
+  { q: "When should a refrigerated vehicle or cold box be cooled?", opts: ["After the goods are loaded","Before the goods are loaded","It does not matter"] },
+  { q: "After checking the temperature, what must you do?", opts: ["Nothing more","Tell a colleague","Record the reading with the time and date"] },
+  { q: "How do you keep the cold in during a multi-stop round?", opts: ["Leave the doors open for airflow","Minimise the time doors are open","Turn the unit off between stops"] },
+  { q: "You notice the temperature is out of range. What should you do?", opts: ["Ignore it if the goods look fine","Adjust the record to look normal","Do not ignore it; record, report, and never guess"] },
+  { q: "You know a load has been spoiled by a deviation. What should you do?", opts: ["Deliver it anyway","Never deliver it; the sender decides if it is usable","Throw it away yourself"] },
+  { q: "Where should the temperature record go?", opts: ["In your pocket","Travel with the goods and be handed over with them","Left in the depot"] },
+  { q: "Under Good Distribution Practice, the driver is:", opts: ["Not involved","Part of the quality chain","Only a delivery person"] },
+  { q: "Why does cold-chain work matter so much?", opts: ["It pays more","Behind every delivery is a patient or customer relying on it","It is faster than normal delivery"] }
+];
+
+// Verified indices: [1,2,1,2,1,2,1,1,1,1]
+// Handover had Q8 wrong (said C/index 2, correct is B/index 1)
+const MCQ_KEYS_ENC = ["MDox","MToy","Mjox","Mzoy","NDox","NToy","Njox","Nzox","ODox","OTox"];
+
+function checkMCQ(qIdx, selectedIdx) {
+  return btoa(qIdx + ":" + selectedIdx) === MCQ_KEYS_ENC[qIdx];
+}
+
+const SA_QUESTIONS = [
+  { q: "What is the cold chain, and why does it matter?", criteria: "Award marks for: the unbroken sequence of correct temperatures from collection to delivery, and that breaking it can ruin medicines or make food unsafe, often invisibly and permanently." },
+  { q: "Why must equipment be pre-cooled before loading?", criteria: "Award marks for: loading into warm equipment lets goods start warming immediately, breaking the cold chain from the start." },
+  { q: "You notice the temperature is out of range. List, in order, what you do.", criteria: "Award marks for: do not ignore it, check the equipment, record the deviation with time and duration, contact the dispatcher, and never deliver goods known to be spoiled." },
+  { q: "Why must temperature records be honest, even when a reading is bad?", criteria: "Award marks for: you cannot tell by looking whether goods are spoiled, and hiding a deviation could put a patient or customer at risk." },
+  { q: "What does chain of custody mean, and what is your part in it?", criteria: "Award marks for: an unbroken documented trail of who had the goods and in what condition, and that the driver keeps it by recording handovers and keeping the goods and records together." }
+];
+
+const STORAGE_KEY = "mkg_courier_tempcontrol_state";
+const defaultState = {
+  accessGranted: false,
+  accessCodeUsed: null,
+  learner: null,
+  completedSessions: [],
+  finalResult: null
+};
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return structuredClone(defaultState);
+    return Object.assign(structuredClone(defaultState), JSON.parse(raw));
+  } catch(e) { return structuredClone(defaultState); }
+}
+function saveState(s) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch(e) {}
+}
+let state = loadState();
+
+function showView(id) {
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("is-active"));
+  const next = document.getElementById(id);
+  if (next) { next.classList.add("is-active"); window.scrollTo({ top: 0, behavior: "smooth" }); }
+}
+
+function route() {
+  if (!state.accessGranted) { showView("view-access"); return; }
+  if (!state.learner)        { showView("view-registration"); return; }
+  showView("view-dashboard");
+  renderDashboard();
+}
+
+/* ---- ACCESS TOKEN GATE ---- */
+async function wireAccessGate() {
+  const gateStatus = document.getElementById("gate-status");
+  const gateForm = document.getElementById("codeField");
+  const input = document.getElementById("codeInput");
+  const submit = document.getElementById("codeSubmit");
+
+  submit.addEventListener("click", () => validateAndGrant(input.value.trim()));
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") validateAndGrant(input.value.trim());
+  });
+
+  // Already granted? Confirm the stored token has not expired before
+  // trusting it, an expired token must re-gate rather than stay open.
+  if (state.accessGranted) {
+    const stored = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (stored) {
+      try {
+        const payload = JSON.parse(base64urlDecode(stored.split(".")[0]));
+        if (payload.exp && payload.exp < Date.now()) {
+          state.accessGranted = false;
+          saveState(state);
+          localStorage.removeItem(TOKEN_STORAGE_KEY);
+        } else {
+          return;
+        }
+      } catch {
+        state.accessGranted = false;
+        saveState(state);
+        localStorage.removeItem(TOKEN_STORAGE_KEY);
+      }
+    } else {
+      return;
+    }
+  }
+
+  // Check the URL for the ?token= param from the purchase email link.
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+
+  if (token) {
+    await validateAndGrant(token);
+  } else {
+    if (gateStatus) gateStatus.textContent = "Enter the access token from your purchase email.";
+    if (gateForm) gateForm.style.display = "block";
+  }
+}
+
+async function validateAndGrant(token) {
+  const gateStatus = document.getElementById("gate-status");
+  const gateForm = document.getElementById("codeField");
+  const submit = document.getElementById("codeSubmit");
+
+  if (!token) {
+    if (gateStatus) gateStatus.textContent = "Enter the access token from your purchase email.";
+    if (gateForm) gateForm.style.display = "block";
+    return;
+  }
+
+  if (gateStatus) gateStatus.textContent = "Validating your access...";
+  if (gateForm) gateForm.style.display = "none";
+  if (submit) { submit.disabled = true; submit.textContent = "Checking..."; }
+
+  try {
+    const res = await fetch(
+      VALIDATE_URL + "?token=" + encodeURIComponent(token) +
+      "&productId=" + encodeURIComponent(PRODUCT_ID)
+    );
+    const data = await res.json();
+
+    if (data.valid) {
+      state.accessGranted = true;
+      state.accessCodeUsed = token;
+      saveState(state);
+      localStorage.setItem(TOKEN_STORAGE_KEY, token);
+      const clean = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, "", clean);
+      showView("view-registration");
+    } else {
+      if (gateStatus) gateStatus.textContent =
+        "This access link is " + (data.reason && data.reason.toLowerCase().includes("expired") ? "expired" : "not valid") +
+        ". Purchase the course or paste your token below.";
+      if (gateForm) gateForm.style.display = "block";
+      if (submit) { submit.disabled = false; submit.textContent = "Verify"; }
+    }
+  } catch {
+    if (gateStatus) gateStatus.textContent =
+      "Could not verify your access. Check your connection and try again.";
+    if (gateForm) gateForm.style.display = "block";
+    if (submit) { submit.disabled = false; submit.textContent = "Verify"; }
+  }
+}
+
+function wireRegistration() {
+  const form = document.getElementById("regForm");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fields = {
+      regName:  { el: document.getElementById("regName"),  wrap: document.getElementById("regNameField"),  validate: v => v.trim().length >= 2 },
+      regEmail: { el: document.getElementById("regEmail"), wrap: document.getElementById("regEmailField"), validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) }
+    };
+    let allValid = true;
+    Object.values(fields).forEach(f => {
+      const ok = f.validate(f.el.value);
+      f.wrap.classList.toggle("field--error", !ok);
+      if (!ok) allValid = false;
+    });
+    if (!allValid) return;
+    state.learner = {
+      name: fields.regName.el.value.trim(),
+      email: fields.regEmail.el.value.trim(),
+      company: document.getElementById("regCompany").value.trim(),
+      enrolledAt: new Date().toISOString()
+    };
+    saveState(state);
+    renderDashboard();
+    showView("view-dashboard");
+  });
+}
+
+function renderDashboard() {
+  if (!state.learner) return;
+  const greeting = document.getElementById("dashGreeting");
+  const firstName = state.learner.name.split(" ")[0];
+  greeting.textContent = "Welcome, " + firstName + ". Work through the sessions in order. Your progress is saved on this device automatically.";
+  const list = document.getElementById("lessonList");
+  list.innerHTML = "";
+  let currentId = null;
+  for (let i = 0; i < SESSIONS.length; i++) {
+    const s = SESSIONS[i];
+    const prevDone = i === 0 || state.completedSessions.includes(SESSIONS[i-1].id);
+    if (prevDone && !state.completedSessions.includes(s.id)) { currentId = s.id; break; }
+  }
+  SESSIONS.forEach((session, idx) => {
+    const isDone = state.completedSessions.includes(session.id);
+    const isUnlocked = idx === 0 || state.completedSessions.includes(SESSIONS[idx-1].id);
+    const isCurrent = session.id === currentId;
+    const li = document.createElement("li");
+    li.className = "lesson-list__item";
+    if (isDone) li.classList.add("lesson-list__item--done");
+    if (!isUnlocked) li.classList.add("lesson-list__item--locked");
+    if (isUnlocked) li.classList.add("lesson-list__item--clickable");
+    if (isCurrent) li.classList.add("lesson-list__item--current");
+    let statusHtml;
+    if (isDone) statusHtml = "Complete &#10003;";
+    else if (isCurrent) statusHtml = "Start &rsaquo;";
+    else if (isUnlocked) statusHtml = "Open";
+    else statusHtml = '<span class="lock-icon" aria-hidden="true"></span> Locked';
+    const numContent = isDone ? "&#10003;" : session.id;
+    li.innerHTML =
+      '<div class="lesson-num" aria-hidden="true">' + numContent + '</div>' +
+      '<div class="lesson-info">' +
+      '  <div class="lesson-info__title">Session ' + session.id + ': ' + session.title + '</div>' +
+      '  <div class="lesson-info__meta">About ' + session.minutes + ' minutes</div>' +
+      '</div>' +
+      '<div class="lesson-status">' + statusHtml + '</div>';
+    if (isUnlocked) {
+      li.setAttribute("tabindex", "0");
+      li.setAttribute("role", "button");
+      li.setAttribute("aria-label", (isDone ? "Review " : "Open ") + "Session " + session.id + ": " + session.title);
+      li.addEventListener("click", () => openSession(session.id));
+      li.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openSession(session.id); } });
+    } else li.setAttribute("aria-disabled", "true");
+    list.appendChild(li);
+  });
+  const allDone = SESSIONS.every(s => state.completedSessions.includes(s.id));
+  const card = document.getElementById("assessmentCard");
+  card.classList.toggle("assessment-card--unlocked", allDone);
+  card.classList.toggle("assessment-card--locked", !allDone);
+  const badge = document.getElementById("assessmentBadge");
+  const meta = document.getElementById("assessmentMeta");
+  const action = document.getElementById("assessmentAction");
+  if (allDone) {
+    badge.innerHTML = "&#9733;";
+    meta.textContent = "15 questions, 80% pass mark. Pass to earn your Certificate of Training Attended.";
+    action.innerHTML = "Start &rsaquo;";
+    card.setAttribute("tabindex", "0"); card.setAttribute("role", "button");
+    card.setAttribute("aria-label", "Start the final assessment");
+  } else {
+    const remaining = SESSIONS.length - state.completedSessions.length;
+    badge.innerHTML = "&#9734;";
+    meta.textContent = "15 questions, 80% pass mark. " + remaining + " session" + (remaining === 1 ? "" : "s") + " left to unlock.";
+    action.innerHTML = '<span class="lock-icon" aria-hidden="true"></span> Locked';
+    card.setAttribute("tabindex", "-1"); card.removeAttribute("role");
+  }
+  const done = state.completedSessions.length;
+  const pct = Math.round((done / SESSIONS.length) * 100);
+  document.getElementById("progressText").textContent = done + " of " + SESSIONS.length + " sessions complete";
+  document.getElementById("progressPercent").textContent = pct + "%";
+  const fill = document.getElementById("progressFill");
+  fill.style.width = pct + "%";
+  fill.setAttribute("aria-valuenow", String(done));
+  fill.classList.toggle("progress__fill--complete", done === SESSIONS.length);
+  document.getElementById("headerProgress").textContent = done + " / " + SESSIONS.length + " sessions";
+}
+
+let currentSessionId = null;
+function renderSessionBody(id) {
+  const c = SESSION_CONTENT[id];
+  const body = document.getElementById("lessonBody");
+  if (!c) { body.innerHTML = "<p>Session content coming soon.</p>"; return; }
+  let html = "";
+  html += '<p class="lead">' + c.intro + '</p>';
+  html += '<h2>What you will learn</h2><ul class="outcomes">';
+  c.outcomes.forEach(o => { html += '<li>' + o + '</li>'; });
+  html += '</ul>';
+  c.sections.forEach(s => { html += '<h2>' + s.h + '</h2>' + s.body; });
+  if (c.notes) {
+    html += '<h2>My notes</h2><div class="sa-field"><textarea placeholder="' + c.notes.replace(/"/g, '&quot;') + '"></textarea></div>';
+  }
+  html += '<div class="callout callout--success"><span class="callout__title">Key takeaway</span>' + c.takeaway + '</div>';
+  html += '<div id="kc-block-' + id + '" style="' + (state.completedSessions.includes(id) ? '' : 'display:none') + '">';
+  html += '<h2>Knowledge Check</h2><p>Answer all three questions correctly to complete this session.</p>';
+  html += '<div id="kc-container-' + id + '"></div>';
+  html += '</div>';
+  if (!state.completedSessions.includes(id)) {
+    html += '<div id="complete-btn-wrap-' + id + '" style="margin-top:var(--space-5)"><button class="btn btn--gold btn--full" id="completeBtn-' + id + '">I have finished reading - take the knowledge check</button></div>';
+  }
+  body.innerHTML = html;
+  const btn = document.getElementById("completeBtn-" + id);
+  if (btn) {
+    btn.addEventListener("click", () => {
+      const kcBlock = document.getElementById("kc-block-" + id);
+      if (kcBlock) { kcBlock.style.display = "block"; kcBlock.scrollIntoView({ behavior: "smooth" }); }
+      btn.parentElement.style.display = "none";
+      renderKnowledgeCheck(id);
+    });
+  }
+  if (state.completedSessions.includes(id)) {
+    renderKnowledgeCheck(id, true);
+  }
+}
+
+function renderKnowledgeCheck(id, alreadyPassed) {
+  const container = document.getElementById("kc-container-" + id);
+  if (!container) return;
+  const checks = KNOWLEDGE_CHECKS[id];
+  if (!checks) return;
+  if (alreadyPassed) {
+    container.innerHTML = '<div class="callout callout--success"><span class="callout__title">Knowledge check passed</span>You have already completed this session.</div>';
+    return;
+  }
+  let html = "";
+  checks.forEach((ck, qi) => {
+    html += '<div class="kc-question" id="kc-q-' + id + '-' + qi + '">';
+    html += '<div class="kc-question__text">' + (qi+1) + '. ' + ck.q + '</div>';
+    ck.opts.forEach((opt, oi) => {
+      html += '<button class="mcq-option" data-sid="' + id + '" data-qi="' + qi + '" data-oi="' + oi + '">' + opt + '</button>';
+    });
+    html += '</div>';
+  });
+  html += '<div id="kc-result-' + id + '" style="margin-top:var(--space-4)"></div>';
+  container.innerHTML = html;
+  const kcState = { answers: {}, locked: {} };
+  container.querySelectorAll(".mcq-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const sid = parseInt(btn.dataset.sid);
+      const qi = parseInt(btn.dataset.qi);
+      const oi = parseInt(btn.dataset.oi);
+      if (kcState.locked[qi]) return;
+      kcState.answers[qi] = oi;
+      container.querySelectorAll('[data-sid="' + sid + '"][data-qi="' + qi + '"]').forEach(b => b.classList.remove("mcq-option--selected"));
+      btn.classList.add("mcq-option--selected");
+      if (Object.keys(kcState.answers).length === checks.length) {
+        let allCorrect = true;
+        checks.forEach((ck, i) => {
+          kcState.locked[i] = true;
+          const selected = kcState.answers[i];
+          container.querySelectorAll('[data-sid="' + sid + '"][data-qi="' + i + '"]').forEach(b => {
+            b.disabled = true;
+            const boi = parseInt(b.dataset.oi);
+            if (boi === ck.correct) b.classList.add("mcq-option--correct");
+            if (boi === selected && boi !== ck.correct) { b.classList.add("mcq-option--incorrect"); allCorrect = false; }
+          });
+        });
+        const resultDiv = document.getElementById("kc-result-" + id);
+        if (allCorrect) {
+          if (!state.completedSessions.includes(id)) {
+            state.completedSessions.push(id);
+            saveState(state);
+          }
+          resultDiv.innerHTML = '<div class="callout callout--success"><span class="callout__title">All correct!</span>Session complete. Return to the dashboard to continue.</div><button class="btn btn--primary btn--full mt-5" onclick="showView(\'view-dashboard\');renderDashboard();">Back to Dashboard</button>';
+        } else {
+          resultDiv.innerHTML = '<div class="callout callout--warning"><span class="callout__title">Not quite</span>Review the correct answers above and try again.</div><button class="btn btn--secondary btn--full mt-5" onclick="renderKnowledgeCheck(' + id + ')">Try Again</button>';
+        }
+      }
+    });
+  });
+}
+
+function openSession(id) {
+  const session = SESSIONS.find(s => s.id === id);
+  if (!session) return;
+  currentSessionId = id;
+  document.getElementById("lessonEyebrow").textContent = "Session " + session.id + " of " + SESSIONS.length;
+  document.getElementById("lesson-title").textContent = session.title;
+  renderSessionBody(id);
+  showView("view-lesson");
+}
+
+function wireSessionView() {
+  document.getElementById("backToDash").addEventListener("click", () => { showView("view-dashboard"); renderDashboard(); });
+}
+
+function wireDashboardActions() {
+  document.getElementById("resetProgress").addEventListener("click", () => {
+    if (confirm("This will erase your registration and all progress on this device. Are you sure?")) {
+      state = structuredClone(defaultState); saveState(state);
+      currentSessionId = null;
+      document.getElementById("headerProgress").textContent = "";
+      document.getElementById("regForm").reset();
+      document.getElementById("codeInput").value = "";
+      document.getElementById("gate-status").textContent = "Enter the access token from your purchase email.";
+      document.getElementById("codeField").style.display = "block";
+      showView("view-access");
+    }
+  });
+  const ac = document.getElementById("assessmentCard");
+  function startAssessmentIfUnlocked() {
+    if (!ac.classList.contains("assessment-card--unlocked")) return;
+    const intro = document.getElementById("ass-intro");
+    const running = document.getElementById("ass-running");
+    const result = document.getElementById("ass-result");
+    if (intro) intro.style.display = "block";
+    if (running) running.style.display = "none";
+    if (result) result.style.display = "none";
+    showView("view-assessment");
+  }
+  ac.addEventListener("click", startAssessmentIfUnlocked);
+  ac.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); startAssessmentIfUnlocked(); } });
+}
+
+function wireAssessment() {
+  document.getElementById("backToDashFromAss").addEventListener("click", () => { showView("view-dashboard"); renderDashboard(); });
+  document.getElementById("startAssBtn").addEventListener("click", () => {
+    document.getElementById("ass-intro").style.display = "none";
+    document.getElementById("ass-running").style.display = "block";
+    renderAssessment();
+  });
+}
+
+function renderAssessment() {
+  const container = document.getElementById("ass-running");
+  let html = '<h2>Part A: Multiple Choice (10 questions)</h2>';
+  MCQ_QUESTIONS.forEach((mcq, qi) => {
+    html += '<div class="kc-question" id="ass-mcq-' + qi + '">';
+    html += '<div class="kc-question__text">' + (qi+1) + '. ' + mcq.q + '</div>';
+    mcq.opts.forEach((opt, oi) => {
+      html += '<button class="mcq-option" data-qi="' + qi + '" data-oi="' + oi + '">' + String.fromCharCode(65 + oi) + ') ' + opt + '</button>';
+    });
+    html += '</div>';
+  });
+  html += '<h2>Part B: Short Answer (5 questions)</h2><p>Answer in your own words.</p>';
+  SA_QUESTIONS.forEach((sa, si) => {
+    html += '<div class="sa-field" id="ass-sa-' + si + '"><label>' + (11 + si) + '. ' + sa.q + '</label><textarea id="sa-answer-' + si + '" placeholder="Write your answer here..."></textarea><div class="sa-criteria" id="sa-criteria-' + si + '"><strong>Marking criteria:</strong> ' + sa.criteria + '</div></div>';
+  });
+  html += '<button class="btn btn--gold btn--full mt-5" id="submitAssBtn">Submit Assessment</button>';
+  container.innerHTML = html;
+  const mcqAnswers = {};
+  container.querySelectorAll(".mcq-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const qi = parseInt(btn.dataset.qi);
+      const oi = parseInt(btn.dataset.oi);
+      mcqAnswers[qi] = oi;
+      container.querySelectorAll('[data-qi="' + qi + '"]').forEach(b => b.classList.remove("mcq-option--selected"));
+      btn.classList.add("mcq-option--selected");
+    });
+  });
+  document.getElementById("submitAssBtn").addEventListener("click", () => {
+    if (Object.keys(mcqAnswers).length < MCQ_QUESTIONS.length) {
+      alert("Please answer all 10 multiple choice questions before submitting.");
+      return;
+    }
+    let mcqScore = 0;
+    MCQ_QUESTIONS.forEach((mcq, qi) => {
+      const selected = mcqAnswers[qi];
+      const isCorrect = checkMCQ(qi, selected);
+      container.querySelectorAll('[data-qi="' + qi + '"]').forEach(b => {
+        b.disabled = true;
+        const boi = parseInt(b.dataset.oi);
+        if (checkMCQ(qi, boi)) b.classList.add("mcq-option--correct");
+        if (boi === selected && !checkMCQ(qi, boi)) b.classList.add("mcq-option--incorrect");
+      });
+      if (isCorrect) mcqScore++;
+    });
+    SA_QUESTIONS.forEach((sa, si) => {
+      document.getElementById("sa-criteria-" + si).style.display = "block";
+    });
+    document.getElementById("submitAssBtn").style.display = "none";
+    const passed = mcqScore >= 8;
+    state.finalResult = { mcqScore: mcqScore, total: 10, passed: passed, date: new Date().toISOString() };
+    saveState(state);
+    const resultDiv = document.getElementById("ass-result");
+    resultDiv.style.display = "block";
+    let resultHtml = '<div class="result-box ' + (passed ? 'result-box--pass' : 'result-box--fail') + '">';
+    resultHtml += '<div class="result-score">' + mcqScore + ' / 10</div>';
+    resultHtml += '<p style="font-size:18px;font-weight:bold;margin-top:var(--space-3)">' + (passed ? 'You passed!' : 'Not yet') + '</p>';
+    if (passed) {
+      resultHtml += '<p>You scored ' + mcqScore + ' out of 10 on the multiple choice section. Review the short answer marking criteria above to self-assess your written answers.</p>';
+      resultHtml += '<button class="btn btn--gold btn--full mt-5" onclick="showCertificate()">View Your Certificate</button>';
+    } else {
+      resultHtml += '<p>You scored ' + mcqScore + ' out of 10. You need at least 8 out of 10 to pass. Review the content and try again.</p>';
+      resultHtml += '<button class="btn btn--secondary btn--full mt-5" onclick="showView(\'view-dashboard\');renderDashboard();">Back to Dashboard</button>';
+    }
+    resultHtml += '</div>';
+    resultDiv.innerHTML = resultHtml;
+    resultDiv.scrollIntoView({ behavior: "smooth" });
+  });
+}
+
+function showCertificate() {
+  if (!state.learner || !state.finalResult || !state.finalResult.passed) return;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("en-ZA", { year: "numeric", month: "long", day: "numeric" });
+  const yy = String(now.getFullYear()).slice(-2);
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  const rand = String(Math.floor(10000 + Math.random() * 90000));
+  const certRef = "MKG-" + yy + mm + dd + "-" + rand;
+  document.getElementById("certName").textContent = state.learner.name;
+  document.getElementById("certDate").textContent = dateStr;
+  document.getElementById("certRef").textContent = certRef;
+  document.getElementById("certMessage").textContent = "Well done, " + state.learner.name.split(" ")[0] + ". You have completed the Temperature-Controlled Delivery course.";
+  showView("view-certificate");
+  document.getElementById("downloadCert").onclick = () => generateCertPDF(state.learner.name, dateStr, certRef);
+  document.getElementById("backToDashFromCert").addEventListener("click", () => { showView("view-dashboard"); renderDashboard(); });
+}
+
+function generateCertPDF(name, dateStr, certRef) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
+  const w = doc.internal.pageSize.getWidth();
+  const h = doc.internal.pageSize.getHeight();
+  doc.setDrawColor(197, 151, 44);
+  doc.setLineWidth(3);
+  doc.rect(10, 10, w - 20, h - 20);
+  doc.setLineWidth(0.5);
+  doc.rect(14, 14, w - 28, h - 28);
+  doc.setFontSize(14);
+  doc.setTextColor(139, 148, 163);
+  doc.text("MK GLOBAL SA (Pty) Ltd", w / 2, 35, { align: "center" });
+  doc.setFontSize(28);
+  doc.setTextColor(27, 58, 92);
+  doc.text("CERTIFICATE OF TRAINING ATTENDED", w / 2, 55, { align: "center" });
+  doc.setDrawColor(197, 151, 44);
+  doc.setLineWidth(1);
+  doc.line(w / 2 - 60, 62, w / 2 + 60, 62);
+  doc.setFontSize(14);
+  doc.setTextColor(58, 66, 81);
+  doc.text("This certifies that", w / 2, 78, { align: "center" });
+  doc.setFontSize(24);
+  doc.setTextColor(27, 58, 92);
+  doc.text(name, w / 2, 92, { align: "center" });
+  doc.setFontSize(14);
+  doc.setTextColor(58, 66, 81);
+  doc.text("has completed the", w / 2, 106, { align: "center" });
+  doc.setFontSize(18);
+  doc.setTextColor(46, 117, 182);
+  doc.text("Temperature-Controlled Delivery", w / 2, 118, { align: "center" });
+  doc.setFontSize(14);
+  doc.setTextColor(58, 66, 81);
+  doc.text("of the Courier Driver Training programme.", w / 2, 130, { align: "center" });
+  doc.setFontSize(11);
+  doc.setTextColor(139, 148, 163);
+  doc.text("Date: " + dateStr + "    |    Certificate Ref: " + certRef, w / 2, 150, { align: "center" });
+  doc.setFontSize(9);
+  doc.text("This certificate confirms attendance of a professional development programme.", w / 2, 165, { align: "center" });
+  doc.text("It is not a formal SAQA qualification and does not replace any licence, permit, or certificate required by law.", w / 2, 171, { align: "center" });
+  doc.setFontSize(10);
+  doc.setTextColor(27, 58, 92);
+  doc.text("MK Global SA (Pty) Ltd  |  info@mkglobal.co.za", w / 2, 185, { align: "center" });
+  doc.save("MKGlobal_TemperatureControlledDelivery_Certificate.pdf");
+}
+
+function wireActionPlan() {
+  document.getElementById("backToDashFromAP").addEventListener("click", () => { showView("view-dashboard"); renderDashboard(); });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  wireAccessGate();
+  wireRegistration();
+  wireSessionView();
+  wireDashboardActions();
+  wireAssessment();
+  wireActionPlan();
+  route();
+});
+</script>
+</body>
+</html>
