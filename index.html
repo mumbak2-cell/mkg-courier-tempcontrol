@@ -211,7 +211,7 @@ p{margin:0 0 var(--space-4) 0}
       <div class="field" id="regEmailField">
         <label for="regEmail">Email address</label>
         <input type="email" id="regEmail" placeholder="you@example.com" autocomplete="email" required>
-        <div class="field__error">Please enter a valid email address.</div>
+        <div class="field__error" id="regEmailError">Please enter a valid email address.</div>
       </div>
       <div class="field" id="regCompanyField">
         <label for="regCompany">Company (optional)</label>
@@ -546,6 +546,7 @@ const STORAGE_KEY = "mkg_courier_tempcontrol_state";
 const defaultState = {
   accessGranted: false,
   accessCodeUsed: null,
+  tokenEmail: null,
   learner: null,
   completedSessions: [],
   finalResult: null
@@ -648,6 +649,7 @@ async function validateAndGrant(token) {
     if (data.valid) {
       state.accessGranted = true;
       state.accessCodeUsed = token;
+      state.tokenEmail = data.email || null;
       saveState(state);
       localStorage.setItem(TOKEN_STORAGE_KEY, token);
       const clean = window.location.pathname + window.location.hash;
@@ -682,7 +684,17 @@ function wireRegistration() {
       f.wrap.classList.toggle("field--error", !ok);
       if (!ok) allValid = false;
     });
+    const regEmailError = document.getElementById("regEmailError");
+    if (allValid && state.tokenEmail) {
+      const typedEmail = fields.regEmail.el.value.trim().toLowerCase();
+      if (typedEmail !== state.tokenEmail.toLowerCase()) {
+        allValid = false;
+        fields.regEmail.wrap.classList.add("field--error");
+        if (regEmailError) regEmailError.textContent = "Email must match the address used to purchase this course.";
+      }
+    }
     if (!allValid) return;
+    if (regEmailError) regEmailError.textContent = "Please enter a valid email address.";
     state.learner = {
       name: fields.regName.el.value.trim(),
       email: fields.regEmail.el.value.trim(),
