@@ -265,7 +265,7 @@ p{margin:0 0 var(--space-4) 0}
     <span class="eyebrow">Final Assessment</span>
     <h1>Temperature-Controlled Delivery</h1>
     <div id="ass-intro">
-      <p class="lead">This assessment has 15 questions: 10 multiple choice and 5 short answer. You need 80% to pass and earn your Training Attended certificate.</p>
+      <p class="lead">This assessment has 15 questions: 10 multiple choice and 5 short answer. You need 80% to pass and earn your Certificate of Attendance.</p>
       <div class="meta-row">
         <span class="meta-pill">15 questions</span>
         <span class="meta-pill">80% pass mark</span>
@@ -297,7 +297,7 @@ p{margin:0 0 var(--space-4) 0}
     <p id="certMessage"></p>
     <div id="certPreview" style="margin:var(--space-5) 0;padding:var(--space-6);border:2px solid var(--mk-gold);border-radius:var(--radius-lg);background:var(--mk-white)">
       <p style="font-size:13px;text-transform:uppercase;letter-spacing:2px;color:var(--mk-grey-400);margin-bottom:var(--space-3)">MK Global SA (Pty) Ltd</p>
-      <h2 style="color:var(--mk-navy);margin-top:0">Certificate of Training Attended</h2>
+      <h2 style="color:var(--mk-navy);margin-top:0">Certificate of Attendance</h2>
       <p style="font-size:15px;color:var(--mk-grey-700)">This certifies that</p>
       <p style="font-size:24px;font-weight:bold;color:var(--mk-navy)" id="certName"></p>
       <p style="font-size:15px;color:var(--mk-grey-700)">has completed the</p>
@@ -761,7 +761,7 @@ function renderDashboard() {
   const action = document.getElementById("assessmentAction");
   if (allDone) {
     badge.innerHTML = "&#9733;";
-    meta.textContent = "15 questions, 80% pass mark. Pass to earn your Certificate of Training Attended.";
+    meta.textContent = "15 questions, 80% pass mark. Pass to earn your Certificate of Attendance.";
     action.innerHTML = "Start &rsaquo;";
     card.setAttribute("tabindex", "0"); card.setAttribute("role", "button");
     card.setAttribute("aria-label", "Start the final assessment");
@@ -1030,7 +1030,7 @@ function generateCertPDF(name, dateStr, certRef) {
   doc.text("MK GLOBAL SA (Pty) Ltd", w / 2, 35, { align: "center" });
   doc.setFontSize(28);
   doc.setTextColor(27, 58, 92);
-  doc.text("CERTIFICATE OF TRAINING ATTENDED", w / 2, 55, { align: "center" });
+  doc.text("CERTIFICATE OF ATTENDANCE", w / 2, 55, { align: "center" });
   doc.setDrawColor(197, 151, 44);
   doc.setLineWidth(1);
   doc.line(w / 2 - 60, 62, w / 2 + 60, 62);
