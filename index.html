@@ -238,7 +238,7 @@ p{margin:0 0 var(--space-4) 0}
       <div class="assessment-card__badge" id="assessmentBadge">&#9734;</div>
       <div class="assessment-card__body">
         <div class="assessment-card__title">Final Assessment</div>
-        <div class="assessment-card__meta" id="assessmentMeta">15 questions, 80% pass mark. Complete all sessions to unlock.</div>
+        <div class="assessment-card__meta" id="assessmentMeta">10 multiple-choice questions (8 correct to pass) and 5 self-assessed short answers. Complete all sessions to unlock.</div>
       </div>
       <div class="assessment-card__action" id="assessmentAction"><span class="lock-icon" aria-hidden="true"></span> Locked</div>
     </div>
@@ -265,10 +265,10 @@ p{margin:0 0 var(--space-4) 0}
     <span class="eyebrow">Final Assessment</span>
     <h1>Temperature-Controlled Delivery</h1>
     <div id="ass-intro">
-      <p class="lead">This assessment has 15 questions: 10 multiple choice and 5 short answer. You need 80% to pass and earn your Certificate of Attendance.</p>
+      <p class="lead">This assessment has 10 multiple-choice questions and 5 self-assessed short answers. Answer at least 8 of the 10 multiple-choice questions correctly to pass. Short answers do not change your pass score. Complete all session checks and pass the final to earn your Certificate of Completion.</p>
       <div class="meta-row">
         <span class="meta-pill">15 questions</span>
-        <span class="meta-pill">80% pass mark</span>
+        <span class="meta-pill">Pass: 8 of 10 MCQ</span>
         <span class="meta-pill">10 MCQ + 5 short answer</span>
       </div>
       <button class="btn btn--gold btn--full" id="startAssBtn">Begin Assessment</button>
@@ -297,14 +297,14 @@ p{margin:0 0 var(--space-4) 0}
     <p id="certMessage"></p>
     <div id="certPreview" style="margin:var(--space-5) 0;padding:var(--space-6);border:2px solid var(--mk-gold);border-radius:var(--radius-lg);background:var(--mk-white)">
       <p style="font-size:13px;text-transform:uppercase;letter-spacing:2px;color:var(--mk-grey-400);margin-bottom:var(--space-3)">MK Global SA (Pty) Ltd</p>
-      <h2 style="color:var(--mk-navy);margin-top:0">Certificate of Attendance</h2>
+      <h2 style="color:var(--mk-navy);margin-top:0">Certificate of Completion</h2>
       <p style="font-size:15px;color:var(--mk-grey-700)">This certifies that</p>
       <p style="font-size:24px;font-weight:bold;color:var(--mk-navy)" id="certName"></p>
       <p style="font-size:15px;color:var(--mk-grey-700)">has completed the</p>
       <p style="font-size:18px;font-weight:bold;color:var(--mk-blue)">Temperature-Controlled Delivery</p>
       <p style="font-size:15px;color:var(--mk-grey-700)">of the Courier Driver Training programme.</p>
       <p style="font-size:13px;color:var(--mk-grey-400);margin-top:var(--space-5)">Date: <span id="certDate"></span> | Ref: <span id="certRef"></span></p>
-      <p style="font-size:11px;color:var(--mk-grey-400);margin-top:var(--space-3)">This certificate confirms attendance of a professional development programme. It is not a formal SAQA qualification and does not replace any licence, permit, or certificate required by law.</p>
+      <p style="font-size:11px;color:var(--mk-grey-400);margin-top:var(--space-3)">This certificate confirms completion of a non-accredited development programme. It is not a formal SAQA qualification and does not replace any licence, permit, or certificate required by law.</p>
     </div>
     <button class="btn btn--gold btn--full" id="downloadCert">Download Certificate (PDF)</button>
     <p class="field__hint mt-5" id="emailStatus"></p>
@@ -761,14 +761,14 @@ function renderDashboard() {
   const action = document.getElementById("assessmentAction");
   if (allDone) {
     badge.innerHTML = "&#9733;";
-    meta.textContent = "15 questions, 80% pass mark. Pass to earn your Certificate of Attendance.";
+    meta.textContent = "10 multiple-choice questions (8 correct to pass) and 5 self-assessed short answers. Pass to earn your Certificate of Completion.";
     action.innerHTML = "Start &rsaquo;";
     card.setAttribute("tabindex", "0"); card.setAttribute("role", "button");
     card.setAttribute("aria-label", "Start the final assessment");
   } else {
     const remaining = SESSIONS.length - state.completedSessions.length;
     badge.innerHTML = "&#9734;";
-    meta.textContent = "15 questions, 80% pass mark. " + remaining + " session" + (remaining === 1 ? "" : "s") + " left to unlock.";
+    meta.textContent = "10 multiple-choice questions (8 correct to pass) and 5 self-assessed short answers. " + remaining + " session" + (remaining === 1 ? "" : "s") + " left to unlock.";
     action.innerHTML = '<span class="lock-icon" aria-hidden="true"></span> Locked';
     card.setAttribute("tabindex", "-1"); card.removeAttribute("role");
   }
@@ -1030,7 +1030,7 @@ function generateCertPDF(name, dateStr, certRef) {
   doc.text("MK GLOBAL SA (Pty) Ltd", w / 2, 35, { align: "center" });
   doc.setFontSize(28);
   doc.setTextColor(27, 58, 92);
-  doc.text("CERTIFICATE OF ATTENDANCE", w / 2, 55, { align: "center" });
+  doc.text("CERTIFICATE OF COMPLETION", w / 2, 55, { align: "center" });
   doc.setDrawColor(197, 151, 44);
   doc.setLineWidth(1);
   doc.line(w / 2 - 60, 62, w / 2 + 60, 62);
