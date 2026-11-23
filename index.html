@@ -319,6 +319,7 @@ p{margin:0 0 var(--space-4) 0}
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="certificate-template.js"></script>
 <script>
 "use strict";
 
@@ -1015,50 +1016,12 @@ function showCertificate() {
   document.getElementById("backToDashFromCert").addEventListener("click", () => { showView("view-dashboard"); renderDashboard(); });
 }
 
-function generateCertPDF(name, dateStr, certRef) {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
-  const w = doc.internal.pageSize.getWidth();
-  const h = doc.internal.pageSize.getHeight();
-  doc.setDrawColor(197, 151, 44);
-  doc.setLineWidth(3);
-  doc.rect(10, 10, w - 20, h - 20);
-  doc.setLineWidth(0.5);
-  doc.rect(14, 14, w - 28, h - 28);
-  doc.setFontSize(14);
-  doc.setTextColor(139, 148, 163);
-  doc.text("MK GLOBAL SA (Pty) Ltd", w / 2, 35, { align: "center" });
-  doc.setFontSize(28);
-  doc.setTextColor(27, 58, 92);
-  doc.text("CERTIFICATE OF COMPLETION", w / 2, 55, { align: "center" });
-  doc.setDrawColor(197, 151, 44);
-  doc.setLineWidth(1);
-  doc.line(w / 2 - 60, 62, w / 2 + 60, 62);
-  doc.setFontSize(14);
-  doc.setTextColor(58, 66, 81);
-  doc.text("This certifies that", w / 2, 78, { align: "center" });
-  doc.setFontSize(24);
-  doc.setTextColor(27, 58, 92);
-  doc.text(name, w / 2, 92, { align: "center" });
-  doc.setFontSize(14);
-  doc.setTextColor(58, 66, 81);
-  doc.text("has completed the", w / 2, 106, { align: "center" });
-  doc.setFontSize(18);
-  doc.setTextColor(46, 117, 182);
-  doc.text("Temperature-Controlled Delivery", w / 2, 118, { align: "center" });
-  doc.setFontSize(14);
-  doc.setTextColor(58, 66, 81);
-  doc.text("of the Courier Driver Training programme.", w / 2, 130, { align: "center" });
-  doc.setFontSize(11);
-  doc.setTextColor(139, 148, 163);
-  doc.text("Date: " + dateStr + "    |    Certificate Ref: " + certRef, w / 2, 150, { align: "center" });
-  doc.setFontSize(9);
-  doc.text("This certificate confirms completion of a non-accredited development programme.", w / 2, 165, { align: "center" });
-  doc.text("It is not a formal SAQA qualification and does not replace any licence, permit, or certificate required by law.", w / 2, 171, { align: "center" });
-  doc.setFontSize(10);
-  doc.setTextColor(27, 58, 92);
-  doc.text("MK Global SA (Pty) Ltd  |  info@mkglobal.co.za", w / 2, 185, { align: "center" });
-  doc.save("MKGlobal_TemperatureControlledDelivery_Certificate.pdf");
+function generateCertPDF(name,dateStr,certRef){
+  try {
+    if(!window.jspdf)throw new Error('PDF library is not loaded. Please refresh and try again.');
+    const doc=window.MKGCertificate.create(window.jspdf.jsPDF,{name,course:"Temperature-Controlled Delivery",date:dateStr,reference:certRef,award:'Completion',hazmat:false});
+    doc.save("MKGlobal_TemperatureControlledDelivery_Certificate.pdf");
+  }catch(error){alert(error.message);}
 }
 
 function wireActionPlan() {
