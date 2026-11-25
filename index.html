@@ -238,7 +238,7 @@ p{margin:0 0 var(--space-4) 0}
       <div class="assessment-card__badge" id="assessmentBadge">&#9734;</div>
       <div class="assessment-card__body">
         <div class="assessment-card__title">Final Assessment</div>
-        <div class="assessment-card__meta" id="assessmentMeta">10 multiple-choice questions (8 correct to pass) and 5 self-assessed short answers. Complete all sessions to unlock.</div>
+        <div class="assessment-card__meta" id="assessmentMeta">10 multiple-choice questions marked by MK Global (8 correct to pass), plus 5 reflection questions that are not marked. Complete all sessions to unlock.</div>
       </div>
       <div class="assessment-card__action" id="assessmentAction"><span class="lock-icon" aria-hidden="true"></span> Locked</div>
     </div>
@@ -265,13 +265,14 @@ p{margin:0 0 var(--space-4) 0}
     <span class="eyebrow">Final Assessment</span>
     <h1>Temperature-Controlled Delivery</h1>
     <div id="ass-intro">
-      <p class="lead">This assessment has 10 multiple-choice questions and 5 self-assessed short answers. Answer at least 8 of the 10 multiple-choice questions correctly to pass. Short answers do not change your pass score. Complete all session checks and pass the final to earn your Certificate of Completion.</p>
+      <p class="lead">This assessment has 10 multiple-choice questions, marked on the MK Global server. Answer at least 8 of the 10 correctly to pass and earn your verified Certificate of Completion. It is followed by 5 reflection questions for your own practice. They are not marked, are not sent to MK Global, and do not affect your result.</p>
       <div class="meta-row">
-        <span class="meta-pill">15 questions</span>
-        <span class="meta-pill">Pass: 8 of 10 MCQ</span>
-        <span class="meta-pill">10 MCQ + 5 short answer</span>
+        <span class="meta-pill">10 multiple-choice questions</span>
+        <span class="meta-pill">Pass: 8 of 10</span>
+        <span class="meta-pill">5 reflection questions, not marked</span>
       </div>
-      <button class="btn btn--gold btn--full" id="startAssBtn">Begin Assessment</button>
+      <p class="field__hint" id="assIntroError" role="alert" style="color:var(--mk-error);font-weight:bold"></p>
+      <button class="btn btn--gold btn--full" id="startAssBtn" type="button">Begin Assessment</button>
     </div>
     <div id="ass-running" style="display:none"></div>
     <div id="ass-result" style="display:none"></div>
@@ -295,19 +296,10 @@ p{margin:0 0 var(--space-4) 0}
     <span class="eyebrow">Congratulations</span>
     <h1>You passed!</h1>
     <p id="certMessage"></p>
-    <div id="certPreview" style="margin:var(--space-5) 0;padding:var(--space-6);border:2px solid var(--mk-gold);border-radius:var(--radius-lg);background:var(--mk-white)">
-      <p style="font-size:13px;text-transform:uppercase;letter-spacing:2px;color:var(--mk-grey-400);margin-bottom:var(--space-3)">MK Global SA (Pty) Ltd</p>
-      <h2 style="color:var(--mk-navy);margin-top:0">Certificate of Completion</h2>
-      <p style="font-size:15px;color:var(--mk-grey-700)">This certifies that</p>
-      <p style="font-size:24px;font-weight:bold;color:var(--mk-navy)" id="certName"></p>
-      <p style="font-size:15px;color:var(--mk-grey-700)">has completed the</p>
-      <p style="font-size:18px;font-weight:bold;color:var(--mk-blue)">Temperature-Controlled Delivery</p>
-      <p style="font-size:15px;color:var(--mk-grey-700)">of the Courier Driver Training programme.</p>
-      <p style="font-size:13px;color:var(--mk-grey-400);margin-top:var(--space-5)">Date: <span id="certDate"></span> | Ref: <span id="certRef"></span></p>
-      <p style="font-size:11px;color:var(--mk-grey-400);margin-top:var(--space-3)">This certificate confirms completion of a non-accredited development programme. It is not a formal SAQA qualification and does not replace any licence, permit, or certificate required by law.</p>
-    </div>
-    <button class="btn btn--gold btn--full" id="downloadCert">Download Certificate (PDF)</button>
-    <p class="field__hint mt-5" id="emailStatus"></p>
+    <p>Your verified MK Global certificate is on the MK Global website. Open it to view, print or save it as a PDF.</p>
+    <a class="btn btn--gold btn--full" id="certLink" href="#" target="_blank" rel="noopener">Open my certificate</a>
+    <p class="field__hint mt-5">We have also emailed the link to the address you bought the course with. Questions? Contact solutions@mkglobal.co.za.</p>
+    <p style="font-size:11px;color:var(--mk-grey-400);margin-top:var(--space-3)">This certificate confirms completion of a non-accredited development programme. It is not a formal SAQA qualification and does not replace any licence, permit, or certificate required by law.</p>
     <button class="btn btn--secondary btn--full mt-5" id="backToDashFromCert">&larr; Back to Dashboard</button>
   </div>
 </div>
@@ -318,8 +310,6 @@ p{margin:0 0 var(--space-4) 0}
   <p>&copy; 2026 MK Global SA (Pty) Ltd. All rights reserved.<br>info@mkglobal.co.za</p>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="certificate-template.js"></script>
 <script>
 "use strict";
 
@@ -337,13 +327,6 @@ function base64urlDecode(str) {
   while (str.length % 4) str += "=";
   return atob(str);
 }
-
-const EMAILJS_CONFIG = {
-  enabled: false,
-  serviceId: "",
-  templateId: "",
-  publicKey: ""
-};
 
 const SESSIONS = [
   { id: 1, title: "The Cold Chain",                     minutes: 12 },
@@ -514,27 +497,22 @@ const KNOWLEDGE_CHECKS = {
 ]
 };
 
-const MCQ_QUESTIONS = [
-  { q: "What is the cold chain?", opts: ["A type of refrigerator","The unbroken sequence of correct temperatures from collection to delivery","A brand of cold box"] },
-  { q: "Chilled or cold-chain goods are usually kept at about:", opts: ["Below minus fifteen degrees","Fifteen to twenty-five degrees","Two to eight degrees"] },
-  { q: "When should a refrigerated vehicle or cold box be cooled?", opts: ["After the goods are loaded","Before the goods are loaded","It does not matter"] },
-  { q: "After checking the temperature, what must you do?", opts: ["Nothing more","Tell a colleague","Record the reading with the time and date"] },
-  { q: "How do you keep the cold in during a multi-stop round?", opts: ["Leave the doors open for airflow","Minimise the time doors are open","Turn the unit off between stops"] },
-  { q: "You notice the temperature is out of range. What should you do?", opts: ["Ignore it if the goods look fine","Adjust the record to look normal","Do not ignore it; record, report, and never guess"] },
-  { q: "You know a load has been spoiled by a deviation. What should you do?", opts: ["Deliver it anyway","Never deliver it; the sender decides if it is usable","Throw it away yourself"] },
-  { q: "Where should the temperature record go?", opts: ["In your pocket","Travel with the goods and be handed over with them","Left in the depot"] },
-  { q: "Under Good Distribution Practice, the driver is:", opts: ["Not involved","Part of the quality chain","Only a delivery person"] },
-  { q: "Why does cold-chain work matter so much?", opts: ["It pays more","Behind every delivery is a patient or customer relying on it","It is faster than normal delivery"] }
-];
+/* ============================================================
+   FINAL ASSESSMENT, marked on the MK Global server
+   The questions, the marking and the certificate come from
+   ASSESS_URL (api/courses/assessment.js in the mkglobal-website
+   repo, bank in api/_lib/paid-course-assessments.js). This page
+   holds no answer key, so a pass cannot be faked here. Its CORS
+   allowlist includes this app's origin (courseUrl in
+   api/_lib/products.js).
+   ============================================================ */
+const ASSESS_URL = "https://mkglobal.co.za/api/courses/assessment";
+const CERT_PAGE_PREFIX = "https://mkglobal.co.za/courses/certificate.html?t=";
 
-// Verified indices: [1,2,1,2,1,2,1,1,1,1]
-// Handover had Q8 wrong (said C/index 2, correct is B/index 1)
-const MCQ_KEYS_ENC = ["MDox","MToy","Mjox","Mzoy","NDox","NToy","Njox","Nzox","ODox","OTox"];
-
-function checkMCQ(qIdx, selectedIdx) {
-  return btoa(qIdx + ":" + selectedIdx) === MCQ_KEYS_ENC[qIdx];
-}
-
+/* Reflection questions. Shown after the multiple choice for the
+   learner's own practice. They are never marked and never sent to
+   the server; the certificate depends only on the 10 server-marked
+   multiple-choice questions. */
 const SA_QUESTIONS = [
   { q: "What is the cold chain, and why does it matter?", criteria: "Award marks for: the unbroken sequence of correct temperatures from collection to delivery, and that breaking it can ruin medicines or make food unsafe, often invisibly and permanently." },
   { q: "Why must equipment be pre-cooled before loading?", criteria: "Award marks for: loading into warm equipment lets goods start warming immediately, breaking the cold chain from the start." },
@@ -564,6 +542,16 @@ function saveState(s) {
 }
 let state = loadState();
 
+/* A pass from the old browser-marked assessment has no verified
+   certificate behind it, so it is cleared and the learner takes the
+   server-marked assessment. A stored link must still point at the
+   MK Global certificate page before it is shown again. */
+if (state.finalResult && state.finalResult.passed &&
+    !(typeof state.finalResult.certificateUrl === "string" && state.finalResult.certificateUrl.startsWith(CERT_PAGE_PREFIX))) {
+  state.finalResult = null;
+  saveState(state);
+}
+
 function showView(id) {
   document.querySelectorAll(".view").forEach(v => v.classList.remove("is-active"));
   const next = document.getElementById(id);
@@ -589,6 +577,13 @@ async function wireAccessGate() {
     if (e.key === "Enter") validateAndGrant(input.value.trim());
   });
 
+  // The purchase token never stays in the address bar.
+  const urlToken = new URLSearchParams(window.location.search).get("token");
+  if (urlToken) {
+    window.history.replaceState({}, "", window.location.pathname + window.location.hash);
+    input.value = urlToken;
+  }
+
   // Already granted? Confirm the stored token has not expired before
   // trusting it, an expired token must re-gate rather than stay open.
   if (state.accessGranted) {
@@ -613,9 +608,8 @@ async function wireAccessGate() {
     }
   }
 
-  // Check the URL for the ?token= param from the purchase email link.
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("token");
+  // The ?token= param from the purchase email link.
+  const token = urlToken;
 
   if (token) {
     await validateAndGrant(token);
@@ -762,14 +756,17 @@ function renderDashboard() {
   const action = document.getElementById("assessmentAction");
   if (allDone) {
     badge.innerHTML = "&#9733;";
-    meta.textContent = "10 multiple-choice questions (8 correct to pass) and 5 self-assessed short answers. Pass to earn your Certificate of Completion.";
-    action.innerHTML = "Start &rsaquo;";
+    const passed = !!(state.finalResult && state.finalResult.passed);
+    meta.textContent = passed
+      ? "Passed. Your verified certificate is on the MK Global website."
+      : "10 multiple-choice questions marked by MK Global (8 correct to pass), plus 5 reflection questions that are not marked. Pass to earn your Certificate of Completion.";
+    action.innerHTML = passed ? "View certificate &rsaquo;" : "Start &rsaquo;";
     card.setAttribute("tabindex", "0"); card.setAttribute("role", "button");
-    card.setAttribute("aria-label", "Start the final assessment");
+    card.setAttribute("aria-label", passed ? "View your certificate" : "Start the final assessment");
   } else {
     const remaining = SESSIONS.length - state.completedSessions.length;
     badge.innerHTML = "&#9734;";
-    meta.textContent = "10 multiple-choice questions (8 correct to pass) and 5 self-assessed short answers. " + remaining + " session" + (remaining === 1 ? "" : "s") + " left to unlock.";
+    meta.textContent = "10 multiple-choice questions marked by MK Global (8 correct to pass), plus 5 reflection questions that are not marked. " + remaining + " session" + (remaining === 1 ? "" : "s") + " left to unlock.";
     action.innerHTML = '<span class="lock-icon" aria-hidden="true"></span> Locked';
     card.setAttribute("tabindex", "-1"); card.removeAttribute("role");
   }
@@ -908,120 +905,310 @@ function wireDashboardActions() {
   const ac = document.getElementById("assessmentCard");
   function startAssessmentIfUnlocked() {
     if (!ac.classList.contains("assessment-card--unlocked")) return;
-    const intro = document.getElementById("ass-intro");
-    const running = document.getElementById("ass-running");
-    const result = document.getElementById("ass-result");
-    if (intro) intro.style.display = "block";
-    if (running) running.style.display = "none";
-    if (result) result.style.display = "none";
+    if (state.finalResult && state.finalResult.passed) { showCertificate(); return; }
+    showAssIntro();
     showView("view-assessment");
+    resumePendingPass();
   }
   ac.addEventListener("click", startAssessmentIfUnlocked);
   ac.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); startAssessmentIfUnlocked(); } });
 }
 
 function wireAssessment() {
-  document.getElementById("backToDashFromAss").addEventListener("click", () => { showView("view-dashboard"); renderDashboard(); });
-  document.getElementById("startAssBtn").addEventListener("click", () => {
-    document.getElementById("ass-intro").style.display = "none";
-    document.getElementById("ass-running").style.display = "block";
-    renderAssessment();
+  document.getElementById("backToDashFromAss").addEventListener("click", () => {
+    assessmentSession = null;
+    showView("view-dashboard"); renderDashboard();
   });
-}
-
-function renderAssessment() {
-  const container = document.getElementById("ass-running");
-  let html = '<h2>Part A: Multiple Choice (10 questions)</h2>';
-  MCQ_QUESTIONS.forEach((mcq, qi) => {
-    html += '<div class="kc-question" id="ass-mcq-' + qi + '">';
-    html += '<div class="kc-question__text">' + (qi+1) + '. ' + mcq.q + '</div>';
-    mcq.opts.forEach((opt, oi) => {
-      html += '<button class="mcq-option" data-qi="' + qi + '" data-oi="' + oi + '">' + String.fromCharCode(65 + oi) + ') ' + opt + '</button>';
-    });
-    html += '</div>';
-  });
-  html += '<h2>Part B: Short Answer (5 questions)</h2><p>Answer in your own words.</p>';
-  SA_QUESTIONS.forEach((sa, si) => {
-    html += '<div class="sa-field" id="ass-sa-' + si + '"><label>' + (11 + si) + '. ' + sa.q + '</label><textarea id="sa-answer-' + si + '" placeholder="Write your answer here..."></textarea><div class="sa-criteria" id="sa-criteria-' + si + '"><strong>Marking criteria:</strong> ' + sa.criteria + '</div></div>';
-  });
-  html += '<button class="btn btn--gold btn--full mt-5" id="submitAssBtn">Submit Assessment</button>';
-  container.innerHTML = html;
-  const mcqAnswers = {};
-  container.querySelectorAll(".mcq-option").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const qi = parseInt(btn.dataset.qi);
-      const oi = parseInt(btn.dataset.oi);
-      mcqAnswers[qi] = oi;
-      container.querySelectorAll('[data-qi="' + qi + '"]').forEach(b => b.classList.remove("mcq-option--selected"));
-      btn.classList.add("mcq-option--selected");
-    });
-  });
-  document.getElementById("submitAssBtn").addEventListener("click", () => {
-    if (Object.keys(mcqAnswers).length < MCQ_QUESTIONS.length) {
-      alert("Please answer all 10 multiple choice questions before submitting.");
-      return;
-    }
-    let mcqScore = 0;
-    MCQ_QUESTIONS.forEach((mcq, qi) => {
-      const selected = mcqAnswers[qi];
-      const isCorrect = checkMCQ(qi, selected);
-      container.querySelectorAll('[data-qi="' + qi + '"]').forEach(b => {
-        b.disabled = true;
-        const boi = parseInt(b.dataset.oi);
-        if (checkMCQ(qi, boi)) b.classList.add("mcq-option--correct");
-        if (boi === selected && !checkMCQ(qi, boi)) b.classList.add("mcq-option--incorrect");
-      });
-      if (isCorrect) mcqScore++;
-    });
-    SA_QUESTIONS.forEach((sa, si) => {
-      document.getElementById("sa-criteria-" + si).style.display = "block";
-    });
-    document.getElementById("submitAssBtn").style.display = "none";
-    const passed = mcqScore >= 8;
-    state.finalResult = { mcqScore: mcqScore, total: 10, passed: passed, date: new Date().toISOString() };
-    saveState(state);
-    const resultDiv = document.getElementById("ass-result");
-    resultDiv.style.display = "block";
-    let resultHtml = '<div class="result-box ' + (passed ? 'result-box--pass' : 'result-box--fail') + '">';
-    resultHtml += '<div class="result-score">' + mcqScore + ' / 10</div>';
-    resultHtml += '<p style="font-size:18px;font-weight:bold;margin-top:var(--space-3)">' + (passed ? 'You passed!' : 'Not yet') + '</p>';
-    if (passed) {
-      resultHtml += '<p>You scored ' + mcqScore + ' out of 10 on the multiple choice section. Review the short answer marking criteria above to self-assess your written answers.</p>';
-      resultHtml += '<button class="btn btn--gold btn--full mt-5" onclick="showCertificate()">View Your Certificate</button>';
-    } else {
-      resultHtml += '<p>You scored ' + mcqScore + ' out of 10. You need at least 8 out of 10 to pass. Review the content and try again.</p>';
-      resultHtml += '<button class="btn btn--secondary btn--full mt-5" onclick="showView(\'view-dashboard\');renderDashboard();">Back to Dashboard</button>';
-    }
-    resultHtml += '</div>';
-    resultDiv.innerHTML = resultHtml;
-    resultDiv.scrollIntoView({ behavior: "smooth" });
-  });
-}
-
-function showCertificate() {
-  if (!state.learner || !state.finalResult || !state.finalResult.passed) return;
-  const now = new Date();
-  const dateStr = now.toLocaleDateString("en-ZA", { year: "numeric", month: "long", day: "numeric" });
-  const yy = String(now.getFullYear()).slice(-2);
-  const mm = String(now.getMonth() + 1).padStart(2, "0");
-  const dd = String(now.getDate()).padStart(2, "0");
-  const rand = String(Math.floor(10000 + Math.random() * 90000));
-  const certRef = "MKG-" + yy + mm + dd + "-" + rand;
-  document.getElementById("certName").textContent = state.learner.name;
-  document.getElementById("certDate").textContent = dateStr;
-  document.getElementById("certRef").textContent = certRef;
-  document.getElementById("certMessage").textContent = "Well done, " + state.learner.name.split(" ")[0] + ". You have completed the Temperature-Controlled Delivery course.";
-  showView("view-certificate");
-  document.getElementById("downloadCert").onclick = () => generateCertPDF(state.learner.name, dateStr, certRef);
+  document.getElementById("startAssBtn").addEventListener("click", startAttempt);
   document.getElementById("backToDashFromCert").addEventListener("click", () => { showView("view-dashboard"); renderDashboard(); });
 }
 
-function generateCertPDF(name,dateStr,certRef){
+/* The attempt being taken: { attemptId, questions, passPercent,
+   answers: { questionId: optionId }, submittedAnswers }. In memory only. */
+let assessmentSession = null;
+
+function accessToken() { return localStorage.getItem(TOKEN_STORAGE_KEY) || ""; }
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/* POST to the assessment API. Never throws: returns {status, body} or {networkError: true}. */
+async function postAssessment(payload) {
   try {
-    if(!window.jspdf)throw new Error('PDF library is not loaded. Please refresh and try again.');
-    const doc=window.MKGCertificate.create(window.jspdf.jsPDF,{name,course:"Temperature-Controlled Delivery",date:dateStr,reference:certRef,award:'Completion',hazmat:false});
-    doc.save("MKGlobal_TemperatureControlledDelivery_Certificate.pdf");
-  }catch(error){alert(error.message);}
+    const res = await fetch(ASSESS_URL, {
+      method: "POST",
+      cache: "no-store",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    let body = {};
+    try { body = (await res.json()) || {}; } catch { body = {}; }
+    return { status: res.status, body };
+  } catch {
+    return { networkError: true };
+  }
+}
+
+const NETWORK_ERROR = "Could not reach the MK Global server. Check your connection and try again.";
+
+/* The server could not verify the purchase token: back to the access gate.
+   Session progress is kept. */
+function accessLost() {
+  assessmentSession = null;
+  state.accessGranted = false;
+  saveState(state);
+  localStorage.removeItem(TOKEN_STORAGE_KEY);
+  document.getElementById("gate-status").textContent =
+    "Your paid course access could not be verified. Open the course from the link in your purchase email, or paste your access token below.";
+  document.getElementById("codeField").style.display = "block";
+  const submit = document.getElementById("codeSubmit");
+  if (submit) { submit.disabled = false; submit.textContent = "Verify"; }
+  showView("view-access");
+}
+
+function showAssIntro() {
+  assessmentSession = null;
+  document.getElementById("ass-intro").style.display = "block";
+  document.getElementById("ass-running").style.display = "none";
+  document.getElementById("ass-running").innerHTML = "";
+  document.getElementById("ass-result").style.display = "none";
+  document.getElementById("ass-result").innerHTML = "";
+  document.getElementById("assIntroError").textContent = "";
+}
+
+/* Ask the server for a fresh attempt. */
+async function startAttempt() {
+  const btn = document.getElementById("startAssBtn");
+  const err = document.getElementById("assIntroError");
+  err.textContent = "";
+  btn.disabled = true;
+  btn.textContent = "Loading questions...";
+  const r = await postAssessment({ action: "attempt", course: PRODUCT_ID, token: accessToken() });
+  btn.disabled = false;
+  btn.textContent = "Begin Assessment";
+  // The learner left the assessment while the questions were loading.
+  if (!document.getElementById("view-assessment").classList.contains("is-active") ||
+      document.getElementById("ass-intro").style.display === "none") return;
+  if (r.status === 200 && r.body.attemptId && Array.isArray(r.body.questions) && r.body.questions.length) {
+    assessmentSession = {
+      attemptId: r.body.attemptId,
+      questions: r.body.questions,
+      passPercent: r.body.passPercent || 80,
+      answers: {},
+      submittedAnswers: null
+    };
+    document.getElementById("ass-intro").style.display = "none";
+    document.getElementById("ass-running").style.display = "block";
+    renderAssessment();
+    return;
+  }
+  if (r.status === 401) return accessLost();
+  err.textContent = r.networkError ? NETWORK_ERROR :
+    ((r.body && r.body.error) || "The assessment could not be loaded. Please try again.");
+}
+
+function renderAssessment() {
+  const s = assessmentSession;
+  const container = document.getElementById("ass-running");
+  const n = s.questions.length;
+  const needed = Math.ceil(n * s.passPercent / 100);
+  let html = '<h2>Part A: Multiple Choice (' + n + ' questions)</h2>';
+  html += '<p>Marked on the MK Global server. Answer at least ' + needed + ' of ' + n + ' correctly to pass.</p>';
+  s.questions.forEach((q, qi) => {
+    html += '<div class="kc-question" id="ass-mcq-' + qi + '">';
+    html += '<div class="kc-question__text">' + (qi + 1) + '. ' + escapeHtml(q.text) + '</div>';
+    (q.options || []).forEach((opt, oi) => {
+      html += '<button class="mcq-option" type="button" data-qid="' + escapeHtml(q.id) + '" data-oid="' + escapeHtml(opt.id) + '">' +
+        String.fromCharCode(65 + oi) + ') ' + escapeHtml(opt.text) + '</button>';
+    });
+    html += '</div>';
+  });
+  html += '<h2>Part B: Reflection (' + SA_QUESTIONS.length + ' questions, not marked)</h2>';
+  html += '<p>These questions are for your own reflection. They are not marked, are not sent to MK Global, and do not affect your result. After you submit, compare your answers with the guidance shown under each question.</p>';
+  SA_QUESTIONS.forEach((sa, si) => {
+    html += '<div class="sa-field" id="ass-sa-' + si + '"><label for="sa-answer-' + si + '">' + (n + 1 + si) + '. ' + escapeHtml(sa.q) + '</label>' +
+      '<textarea id="sa-answer-' + si + '" placeholder="Write your answer here..."></textarea>' +
+      '<div class="sa-criteria" id="sa-criteria-' + si + '"><strong>What a good answer covers:</strong> ' + escapeHtml(sa.criteria) + '</div></div>';
+  });
+  html += '<p class="field__hint" id="assSubmitError" role="alert" style="color:var(--mk-error);font-weight:bold"></p>';
+  html += '<button class="btn btn--gold btn--full mt-5" id="submitAssBtn" type="button">Submit Assessment</button>';
+  container.innerHTML = html;
+  container.querySelectorAll(".mcq-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (s.submittedAnswers) return;
+      s.answers[btn.dataset.qid] = btn.dataset.oid;
+      container.querySelectorAll(".mcq-option").forEach(b => {
+        if (b.dataset.qid === btn.dataset.qid) b.classList.remove("mcq-option--selected");
+      });
+      btn.classList.add("mcq-option--selected");
+    });
+  });
+  document.getElementById("submitAssBtn").addEventListener("click", submitAssessment);
+}
+
+/* Mark on the server. It says pass or fail only: no score and no answer key.
+   Only the multiple-choice option ids are sent; reflection answers never are. */
+async function submitAssessment() {
+  const s = assessmentSession;
+  if (!s) return;
+  const container = document.getElementById("ass-running");
+  if (!s.submittedAnswers) {
+    const missing = s.questions.filter(q => !Object.hasOwn(s.answers, q.id)).length;
+    if (missing) {
+      alert("Please answer all " + s.questions.length + " multiple choice questions before submitting.");
+      return;
+    }
+    s.submittedAnswers = Object.assign({}, s.answers);
+    container.querySelectorAll(".mcq-option").forEach(b => { b.disabled = true; });
+    SA_QUESTIONS.forEach((sa, si) => {
+      const c = document.getElementById("sa-criteria-" + si);
+      if (c) c.style.display = "block";
+    });
+  }
+  const btn = document.getElementById("submitAssBtn");
+  const errEl = document.getElementById("assSubmitError");
+  errEl.textContent = "";
+  btn.disabled = true;
+  btn.textContent = "Marking your answers...";
+  const r = await postAssessment({ action: "check", attemptId: s.attemptId, answers: s.submittedAnswers });
+  btn.disabled = false;
+  btn.textContent = "Submit Assessment";
+  if (r.status === 200 && r.body.passed === true) {
+    // Saved so a reload before "Get my certificate" does not lose the pass.
+    // The server accepts the attempt for 24 hours.
+    state.pendingPass = { attemptId: s.attemptId, answers: s.submittedAnswers, passPercent: s.passPercent, at: Date.now() };
+    saveState(state);
+  }
+  if (assessmentSession !== s) return; // the learner left meanwhile
+  if (r.status === 200 && typeof r.body.passed === "boolean") {
+    btn.style.display = "none";
+    if (r.body.passed) return showPass(s);
+    assessmentSession = null;
+    state.finalResult = { passed: false, lastAttemptAt: new Date().toISOString() };
+    saveState(state);
+    return showResultBox(false, "Not yet",
+      '<p>You did not reach the pass mark (' + escapeHtml(s.passPercent) + '%) this time. Review the sessions and try again. You can retake the assessment as many times as you need. Each retake starts a fresh attempt.</p>',
+      [{ id: "resultRetake", label: "Retake assessment", cls: "btn--primary", onClick: showAssIntroTop }, BACK_TO_DASH]);
+  }
+  if (r.status === 401) return accessLost();
+  if (r.status === 409) return assessmentRestart(r.body.message);
+  errEl.textContent = r.networkError ? NETWORK_ERROR : "Something went wrong checking your answers. Please try again.";
+}
+
+function showAssIntroTop() {
+  showAssIntro();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+const BACK_TO_DASH = {
+  id: "resultBackDash", label: "Back to Dashboard", cls: "btn--secondary",
+  onClick: () => { assessmentSession = null; showView("view-dashboard"); renderDashboard(); }
+};
+
+/* Result box under the questions: pass or fail look, message HTML and buttons [{id, label, cls, onClick}]. */
+function showResultBox(passed, headline, bodyHtml, buttons) {
+  const resultDiv = document.getElementById("ass-result");
+  let html = '<div class="result-box ' + (passed ? "result-box--pass" : "result-box--fail") + '">';
+  html += '<p style="font-size:18px;font-weight:bold;margin-top:0">' + escapeHtml(headline) + '</p>' + bodyHtml;
+  buttons.forEach(b => {
+    html += '<button class="btn ' + b.cls + ' btn--full mt-5" id="' + b.id + '" type="button">' + escapeHtml(b.label) + '</button>';
+  });
+  html += '</div>';
+  resultDiv.innerHTML = html;
+  resultDiv.style.display = "block";
+  buttons.forEach(b => { document.getElementById(b.id).addEventListener("click", b.onClick); });
+  resultDiv.scrollIntoView({ behavior: "smooth" });
+}
+
+function assessmentRestart(message) {
+  assessmentSession = null;
+  const btn = document.getElementById("submitAssBtn");
+  if (btn) btn.style.display = "none";
+  showResultBox(false, "Please start the assessment again",
+    '<p>' + escapeHtml(message || "This assessment has expired.") + ' Each new start draws a fresh attempt.</p>',
+    [{ id: "resultRestart", label: "Start again", cls: "btn--primary", onClick: showAssIntroTop }, BACK_TO_DASH]);
+}
+
+/* A pass saved by submitAssessment and not yet certified: go straight to
+   the name step. Older than 23 hours, the server would refuse it. */
+function resumePendingPass() {
+  const p = state.pendingPass;
+  if (!p) return;
+  if (!(typeof p.attemptId === "string" && p.answers && typeof p.at === "number" && Date.now() - p.at < 23 * 60 * 60 * 1000)) {
+    delete state.pendingPass;
+    saveState(state);
+    return;
+  }
+  const s = { attemptId: p.attemptId, questions: [], passPercent: p.passPercent || 80, answers: p.answers, submittedAnswers: p.answers };
+  assessmentSession = s;
+  document.getElementById("ass-intro").style.display = "none";
+  showPass(s);
+}
+
+/* Passed: confirm the name for the certificate, then ask the server for it. */
+function showPass(s) {
+  const name = (state.learner && state.learner.name) || "";
+  const firstName = name.split(" ")[0];
+  showResultBox(true, "You passed!",
+    '<p>Well done' + (firstName ? ", " + escapeHtml(firstName) : "") + '. You passed the final assessment.</p>' +
+    '<div class="field" id="certNameField" style="text-align:left">' +
+    '<label for="certNameInput">Name on certificate</label>' +
+    '<input type="text" id="certNameInput" maxlength="60" autocomplete="name" value="' + escapeHtml(name) + '">' +
+    '<div class="field__error" id="certNameError" role="alert">Please enter your name.</div></div>' +
+    '<p class="field__hint">We will also email the certificate link to the address you bought the course with.</p>',
+    [{ id: "resultCertify", label: "Get my certificate", cls: "btn--gold", onClick: () => requestCertificate(s) }]);
+}
+
+async function requestCertificate(s) {
+  const input = document.getElementById("certNameInput");
+  const field = document.getElementById("certNameField");
+  const errEl = document.getElementById("certNameError");
+  const btn = document.getElementById("resultCertify");
+  const name = input.value.trim().replace(/\s+/g, " ");
+  const showErr = (msg) => { errEl.textContent = msg; field.classList.add("field--error"); input.focus(); };
+  field.classList.remove("field--error");
+  if (name.length < 2) return showErr("Please enter your name.");
+  btn.disabled = true;
+  btn.textContent = "Issuing your certificate...";
+  const r = await postAssessment({
+    action: "certify", attemptId: s.attemptId, answers: s.submittedAnswers, token: accessToken(), name
+  });
+  btn.disabled = false;
+  btn.textContent = "Get my certificate";
+  const url = r.status === 200 && typeof r.body.certificateUrl === "string" ? r.body.certificateUrl : "";
+  if (url.startsWith(CERT_PAGE_PREFIX)) {
+    assessmentSession = null;
+    delete state.pendingPass;
+    state.finalResult = { passed: true, completedAt: new Date().toISOString(), certificateUrl: url };
+    saveState(state);
+    return showCertificate();
+  }
+  if (r.status === 400 && r.body.errors && r.body.errors.name) return showErr(r.body.errors.name);
+  if (r.status === 401) return accessLost();
+  if (r.status === 409) {
+    delete state.pendingPass;
+    saveState(state);
+    return assessmentRestart(r.body.message);
+  }
+  showErr(r.networkError ? NETWORK_ERROR :
+    "We could not issue your certificate. Please try again, or contact solutions@mkglobal.co.za.");
+}
+
+/* Certificate: a link to the verified certificate on the MK Global website. */
+function showCertificate() {
+  const result = state.finalResult;
+  if (!result || !result.passed || typeof result.certificateUrl !== "string" || !result.certificateUrl.startsWith(CERT_PAGE_PREFIX)) return;
+  const firstName = state.learner ? state.learner.name.split(" ")[0] : "";
+  document.getElementById("certMessage").textContent =
+    "Well done" + (firstName ? ", " + firstName : "") + ". You have completed the Temperature-Controlled Delivery course.";
+  document.getElementById("certLink").href = result.certificateUrl;
+  showView("view-certificate");
 }
 
 function wireActionPlan() {
