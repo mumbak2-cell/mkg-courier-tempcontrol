@@ -579,7 +579,10 @@ async function wireAccessGate() {
 
   // The purchase token never stays in the address bar.
   const urlToken = new URLSearchParams(window.location.search).get("token");
-  if (urlToken) window.history.replaceState({}, "", window.location.pathname + window.location.hash);
+  if (urlToken) {
+    window.history.replaceState({}, "", window.location.pathname + window.location.hash);
+    input.value = urlToken;
+  }
 
   // Already granted? Confirm the stored token has not expired before
   // trusting it, an expired token must re-gate rather than stay open.
@@ -905,6 +908,7 @@ function wireDashboardActions() {
     if (state.finalResult && state.finalResult.passed) { showCertificate(); return; }
     showAssIntro();
     showView("view-assessment");
+    resumePendingPass();
   }
   ac.addEventListener("click", startAssessmentIfUnlocked);
   ac.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); startAssessmentIfUnlocked(); } });
@@ -1028,9 +1032,9 @@ function renderAssessment() {
   html += '<h2>Part B: Reflection (' + SA_QUESTIONS.length + ' questions, not marked)</h2>';
   html += '<p>These questions are for your own reflection. They are not marked, are not sent to MK Global, and do not affect your result. After you submit, compare your answers with the guidance shown under each question.</p>';
   SA_QUESTIONS.forEach((sa, si) => {
-    html += '<div class="sa-field" id="ass-sa-' + si + '"><label for="sa-answer-' + si + '">' + (n + 1 + si) + '. ' + sa.q + '</label>' +
+    html += '<div class="sa-field" id="ass-sa-' + si + '"><label for="sa-answer-' + si + '">' + (n + 1 + si) + '. ' + escapeHtml(sa.q) + '</label>' +
       '<textarea id="sa-answer-' + si + '" placeholder="Write your answer here..."></textarea>' +
-      '<div class="sa-criteria" id="sa-criteria-' + si + '"><strong>What a good answer covers:</strong> ' + sa.criteria + '</div></div>';
+      '<div class="sa-criteria" id="sa-criteria-' + si + '"><strong>What a good answer covers:</strong> ' + escapeHtml(sa.criteria) + '</div></div>';
   });
   html += '<p class="field__hint" id="assSubmitError" role="alert" style="color:var(--mk-error);font-weight:bold"></p>';
   html += '<button class="btn btn--gold btn--full mt-5" id="submitAssBtn" type="button">Submit Assessment</button>';
@@ -1073,9 +1077,15 @@ async function submitAssessment() {
   btn.disabled = true;
   btn.textContent = "Marking your answers...";
   const r = await postAssessment({ action: "check", attemptId: s.attemptId, answers: s.submittedAnswers });
-  if (assessmentSession !== s) return; // the learner left meanwhile
   btn.disabled = false;
   btn.textContent = "Submit Assessment";
+  if (r.status === 200 && r.body.passed === true) {
+    // Saved so a reload before "Get my certificate" does not lose the pass.
+    // The server accepts the attempt for 24 hours.
+    state.pendingPass = { attemptId: s.attemptId, answers: s.submittedAnswers, passPercent: s.passPercent, at: Date.now() };
+    saveState(state);
+  }
+  if (assessmentSession !== s) return; // the learner left meanwhile
   if (r.status === 200 && typeof r.body.passed === "boolean") {
     btn.style.display = "none";
     if (r.body.passed) return showPass(s);
@@ -1125,6 +1135,22 @@ function assessmentRestart(message) {
     [{ id: "resultRestart", label: "Start again", cls: "btn--primary", onClick: showAssIntroTop }, BACK_TO_DASH]);
 }
 
+/* A pass saved by submitAssessment and not yet certified: go straight to
+   the name step. Older than 23 hours, the server would refuse it. */
+function resumePendingPass() {
+  const p = state.pendingPass;
+  if (!p) return;
+  if (!(typeof p.attemptId === "string" && p.answers && typeof p.at === "number" && Date.now() - p.at < 23 * 60 * 60 * 1000)) {
+    delete state.pendingPass;
+    saveState(state);
+    return;
+  }
+  const s = { attemptId: p.attemptId, questions: [], passPercent: p.passPercent || 80, answers: p.answers, submittedAnswers: p.answers };
+  assessmentSession = s;
+  document.getElementById("ass-intro").style.display = "none";
+  showPass(s);
+}
+
 /* Passed: confirm the name for the certificate, then ask the server for it. */
 function showPass(s) {
   const name = (state.learner && state.learner.name) || "";
@@ -1158,13 +1184,18 @@ async function requestCertificate(s) {
   const url = r.status === 200 && typeof r.body.certificateUrl === "string" ? r.body.certificateUrl : "";
   if (url.startsWith(CERT_PAGE_PREFIX)) {
     assessmentSession = null;
+    delete state.pendingPass;
     state.finalResult = { passed: true, completedAt: new Date().toISOString(), certificateUrl: url };
     saveState(state);
     return showCertificate();
   }
   if (r.status === 400 && r.body.errors && r.body.errors.name) return showErr(r.body.errors.name);
   if (r.status === 401) return accessLost();
-  if (r.status === 409) return assessmentRestart(r.body.message);
+  if (r.status === 409) {
+    delete state.pendingPass;
+    saveState(state);
+    return assessmentRestart(r.body.message);
+  }
   showErr(r.networkError ? NETWORK_ERROR :
     "We could not issue your certificate. Please try again, or contact solutions@mkglobal.co.za.");
 }
