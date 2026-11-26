@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<meta name="description" content="Temperature-Controlled Delivery online course by MK Global SA. Professional training for South African courier drivers handling cold-chain goods.">
+<meta name="description" content="Courier Driver Training: Temperature-Controlled online course by MK Global SA. Professional training for South African courier drivers handling cold-chain goods.">
 <meta name="theme-color" content="#1B3A5C">
-<title>Temperature-Controlled Delivery | MK Global SA</title>
+<title>Courier Driver Training: Temperature-Controlled | MK Global SA</title>
 
 <style>
 :root {
@@ -183,7 +183,7 @@ p{margin:0 0 var(--space-4) 0}
 <div class="view is-active" id="view-access">
   <div class="card text-center">
     <span class="eyebrow">Restricted access</span>
-    <h1 id="gate-title">Temperature-Controlled Delivery</h1>
+    <h1 id="gate-title">Courier Driver Training: Temperature-Controlled</h1>
     <p class="lead">Stream 4 of the Courier Driver Training programme</p>
     <div class="callout callout--warning"><span class="callout__title">Prerequisite</span>This stream builds on the Core Courier Driver Fundamentals (Stream 1). Please complete Stream 1 before starting this course.</div>
     <p id="gate-status">Checking your access...</p>
@@ -225,7 +225,7 @@ p{margin:0 0 var(--space-4) 0}
 <!-- DASHBOARD -->
 <div class="view" id="view-dashboard">
   <div class="card">
-    <span class="eyebrow">Stream 4: Temperature-Controlled Delivery</span>
+    <span class="eyebrow">Courier Driver Training: Temperature-Controlled (Stream 4)</span>
     <h1>Your Course Dashboard</h1>
     <p id="dashGreeting"></p>
     <div class="progress">
@@ -263,7 +263,7 @@ p{margin:0 0 var(--space-4) 0}
   <div class="card">
     <button class="btn btn--secondary" id="backToDashFromAss" style="margin-bottom:var(--space-4)">&larr; Back to Dashboard</button>
     <span class="eyebrow">Final Assessment</span>
-    <h1>Temperature-Controlled Delivery</h1>
+    <h1>Courier Driver Training: Temperature-Controlled</h1>
     <div id="ass-intro">
       <p class="lead">This assessment has 10 multiple-choice questions, marked on the MK Global server. Answer at least 8 of the 10 correctly to pass and earn your verified Certificate of Completion. It is followed by 5 reflection questions for your own practice. They are not marked, are not sent to MK Global, and do not affect your result.</p>
       <div class="meta-row">
@@ -307,7 +307,7 @@ p{margin:0 0 var(--space-4) 0}
 </main>
 
 <footer class="site-footer">
-  <p>&copy; 2026 MK Global SA (Pty) Ltd. All rights reserved.<br>info@mkglobal.co.za</p>
+  <p>&copy; 2026 MK Global SA (Pty) Ltd. All rights reserved.<br>solutions@mkglobal.co.za</p>
 </footer>
 
 <script>
@@ -1206,7 +1206,7 @@ function showCertificate() {
   if (!result || !result.passed || typeof result.certificateUrl !== "string" || !result.certificateUrl.startsWith(CERT_PAGE_PREFIX)) return;
   const firstName = state.learner ? state.learner.name.split(" ")[0] : "";
   document.getElementById("certMessage").textContent =
-    "Well done" + (firstName ? ", " + firstName : "") + ". You have completed the Temperature-Controlled Delivery course.";
+    "Well done" + (firstName ? ", " + firstName : "") + ". You have completed the Courier Driver Training: Temperature-Controlled course.";
   document.getElementById("certLink").href = result.certificateUrl;
   showView("view-certificate");
 }
